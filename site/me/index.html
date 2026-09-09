@@ -294,6 +294,54 @@ p{margin:0 0 1em}
 .gal img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:var(--foam)}
 .gal figcaption{margin-top:11px;font-size:14px;color:var(--steel);line-height:1.5}
 
+/* переключатель языка */
+.langsw{display:flex;align-items:center;gap:2px;border:1px solid var(--line);padding:3px}
+.langsw a{font-size:12.5px;font-weight:600;color:var(--steel);padding:6px 9px;line-height:1;
+  transition:background .15s,color .15s}
+.langsw a:hover{color:var(--ink);background:var(--foam)}
+.langsw a[aria-current="true"]{background:var(--ink);color:#fff}
+.nav-mob .langsw{margin-top:18px;align-self:flex-start}
+.nav-mob .langsw a{border-bottom:0;padding:8px 13px;font-size:14px}
+@media(max-width:1000px){.hdr .langsw{display:none}}
+
+/* фотобаннер */
+.photo-band{position:relative;min-height:clamp(300px,42vw,460px);display:flex;align-items:flex-end;
+  background:var(--sea) url('/img/marine-hero.webp') center/cover no-repeat}
+.photo-band::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(11,36,48,.88) 0%,rgba(11,36,48,.55) 45%,rgba(11,36,48,.1) 100%)}
+.photo-band .wrap{position:relative;z-index:2;padding-top:52px;padding-bottom:52px;width:100%}
+.photo-band h2{color:#fff;max-width:16ch}
+.photo-band p{color:#CFDCE2;max-width:46ch;margin-bottom:0}
+.photo-band .label{color:#9CB6C0}
+
+/* линейка продуктов на тёмном */
+.range{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:44px}
+.range-i{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.035);padding:26px 24px 28px;
+  display:flex;flex-direction:column}
+.range-i .shot{height:190px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:22px}
+.range-i .shot img{max-height:190px;width:auto}
+.range-i h3{color:#fff;margin-bottom:6px}
+.range-i .zone{font-family:var(--f-mono);font-size:11.5px;color:#5FC6E0;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:13px}
+.range-i p{color:#B4C6CE;font-size:14.5px;margin:0}
+
+/* доказательства */
+.proof{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-top:14px}
+.proof-i{background:var(--paper);padding:30px 28px}
+.proof-i h3{margin-bottom:8px}
+.proof-ref{font-family:var(--f-mono);font-size:11.5px;color:var(--magenta);letter-spacing:.08em;
+  margin-bottom:16px}
+.proof-i p{color:var(--ink-soft);font-size:15px;margin-bottom:14px}
+.proof-i p:last-child{margin-bottom:0}
+.proof-num{display:flex;gap:28px;flex-wrap:wrap;margin:18px 0 16px;
+  padding:16px 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.proof-num b{display:block;font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--ink);
+  line-height:1}
+.proof-num span{font-size:13px;color:var(--steel)}
+.caveat{font-size:13.5px;color:var(--steel);font-style:normal}
+@media(max-width:900px){.range,.proof{grid-template-columns:1fr}}
+
 /* consent banner — Consent Mode is useless without something to lift it */
 .cc{position:fixed;left:0;right:0;bottom:0;z-index:90;background:var(--ink);color:#EEF3F5;
   padding:16px var(--pad);display:none;gap:18px;align-items:center;flex-wrap:wrap;
@@ -464,6 +512,7 @@ p{margin:0 0 1em}
           <dt>Garancija za plovila</dt><dd>do 5 god.</dd>
           <dt>Nanosi</dt><dd>samo sertifikovani izvođač</dd>
           <dt>Registruje se kod</dt><dd>Ceramic Pro HQ</dd>
+          <dt>Pomorsko odobrenje</dt><dd>Bureau Veritas</dd>
           <dt>Aktivne teritorije</dt><dd>4 · 9 u planu</dd>
         </dl>
       </div>
@@ -485,10 +534,9 @@ p{margin:0 0 1em}
     <div class="head">
       <div>
         <p class="label">Dokle ide zaštita</p>
-        <h2>Sve iznad vodene linije</h2>
+        <h2>Različita zaštita iznad i ispod</h2>
       </div>
-      <p class="note">Ispod nje svoj posao i dalje radi antivegetativni premaz. Keramički sistem
-        štiti površine koje so, sunce i pranje zaista napadaju.</p>
+      <p class="note">Iznad nje Bravo štiti gelkot i lak od soli i UV zraka. Ispod nje Ceramic Pro Marine je i sam antivegetativna zaštita s tipskim odobrenjem.</p>
     </div>
     <svg role="img" aria-label="Technical profile drawing of a motor yacht showing the coated zone above the waterline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340">
 <g fill="none" stroke="#231F20" stroke-linecap="round" stroke-linejoin="round">
@@ -544,8 +592,17 @@ p{margin:0 0 1em}
       <span><i>Trup i bokovi</i> — so, fleke, oksidacija</span>
       <span><i>Nadgrađe</i> — UV i gubitak boje</span>
       <span><i>Staklo</i> — čisti se u vožnji</span>
-      <span><i>Ispod vodene linije</i> — antivegetativni premaz, ne keramika</span>
+      <span><i>Ispod vodene linije</i> — Ceramic Pro Marine, antivegetativna zaštita</span>
     </div>
+  </div>
+</section>
+
+<section class="photo-band">
+  <div class="wrap">
+    <p class="label">Plovila</p>
+    <h2>Napravljeno za slanu vodu</h2>
+    <p>Ceramic Pro Marine je namjenski pomorski program proizvođača — različita hemija iznad i
+      ispod vodene linije, a ne proizvod za automobile prodat vlasnicima brodova.</p>
   </div>
 </section>
 
@@ -591,6 +648,79 @@ p{margin:0 0 1em}
           <li>Otpornost na buđ i fleke</li>
         </ul>
       </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-deep" id="range">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Pomorski program</p>
+      <h2>Tri zaštite, tri zone</h2>
+      <p class="lede">Trup nije jedna površina. Ono što izdrži ispod vodene linije ne pripada na
+        vjetrobran, i proizvođač ih pravi odvojeno.</p>
+    </div>
+    <div class="range rv">
+      <div class="range-i">
+        <div class="shot"><img src="/img/cp-marine.webp" alt="Ceramic Pro Marine 1000 ml — antivegetativna zaštita za ispod vodene linije" loading="lazy" width="217" height="620"></div>
+        <h3>Ceramic Pro Marine</h3>
+        <p class="zone">Ispod vodene linije</p>
+        <p>Antivegetativna zaštita bez organokalajnih jedinjenja za podvodne površine. Odupire se
+          obrastanju i štiti trup od štete koju prave i naslage i njihovo uklanjanje. Tipsko
+          odobrenje Bureau Veritas.</p>
+      </div>
+      <div class="range-i">
+        <div class="shot"><img src="/img/cp-bravo.webp" alt="Ceramic Pro Bravo — zaštita površina iznad vodene linije" loading="lazy" width="552" height="620"></div>
+        <h3>Ceramic Pro Bravo</h3>
+        <p class="zone">Iznad vodene linije</p>
+        <p>Za bokove, nadgrađe i gelkot. Pravljeno za pomorsku klimu: slanu vodenu prašinu, UV i
+          stalno pranje koje obično zaštitu skine za jednu sezonu.</p>
+      </div>
+      <div class="range-i">
+        <div class="shot"><img src="/img/cp-squall.webp" alt="Ceramic Pro Squall — zaštita stakla na plovilima" loading="lazy" width="539" height="620"></div>
+        <h3>Ceramic Pro Squall</h3>
+        <p class="zone">Staklo i prozori</p>
+        <p>Namjenska zaštita za prozore kormilarnice i vjetrobrane. Prskanje i kiša se u vožnji
+          sami skidaju umjesto da se razmazuju po vidnom polju.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="evidence">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Dokazi</p>
+      <h2>Šta je zaista dokumentovano</h2>
+      <p class="lede">Tržište zaštite puno je tvrdnji koje niko ne može provjeriti. Ove dvije su
+        izdate nezavisno i mogu se provjeriti, pa ih navodimo tačno — uključujući i njihova
+        ograničenja.</p>
+    </div>
+    <div class="proof rv">
+      <div class="proof-i">
+        <h3>Tipsko odobrenje Bureau Veritas</h3>
+        <p class="proof-ref">Sertifikat 48947/B0 BV · važi do 18. 3. 2027.</p>
+        <p>Ceramic Pro Marine ima Type Approval Certificate izdat od Bureau Veritas Marine &amp;
+          Offshore kao antivegetativni sistem, ocijenjen prema dodatku
+          <strong>IMO MEPC.195(61)</strong>. Proizvod ne sadrži organokalajna jedinjenja.</p>
+        <p class="caveat">Šta to tačno znači: potvrđuje da je proizvod usklađen s međunarodnom
+          konvencijom o antivegetativnim sistemima. Bureau Veritas navodi da odobrenje ne pokriva
+          djelotvornost protiv obrastanja, trajnost ni zaštitu od korozije. Dokazuje da je
+          proizvod legitiman za upotrebu na plovilima — ne koliko dobro radi.</p>
+      </div>
+      <div class="proof-i">
+        <h3>Ispitivanja otpora u bazenu</h3>
+        <p class="proof-ref">National Cheng Kung University · 2017. i 2018.</p>
+        <p>Dvije nezavisne serije mjerile su otpor trupa sa zaštitom i bez nje, u univerzitetskom
+          bazenu za tegljenje.</p>
+        <div class="proof-num">
+          <div><b>3,33%</b><span>manji otpor — model jahte 2,03 m, 2017.</span></div>
+          <div><b>2,97%</b><span>manji otpor — model broda 8,11 m, 2018.</span></div>
+        </div>
+        <p class="caveat">Obje vrijednosti su na modelu. Izvještaj iz 2018. izričito navodi da
+          rezultat važi za model, a ne za brod u punoj veličini. Navodimo ih kao dokaz da zaštita
+          mjerljivo izglađuje trup, a ne kao obećanje uštede goriva za vaše plovilo.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -761,10 +891,8 @@ p{margin:0 0 1em}
           brodogradilištem da uđe u već planirano dizanje.</p></div>
       </div>
       <div class="faq-i">
-        <button class="faq-q" data-track="faq_open">Zamjenjuje li keramika antivegetativni premaz?</button>
-        <div class="faq-a"><p>Ne. To su dva različita posla. Keramički sistem štiti gelkot i lak
-          iznad i na vodenoj liniji, a antivegetativni premaz ostaje zadužen za obrastanje ispod
-          nje. Pripremamo površine tako da se ne sukobljavaju.</p></div>
+        <button class="faq-q" data-track="faq_open">Je li ovo antivegetativna zaštita?</button>
+        <div class="faq-a"><p>Ispod vodene linije jeste. Ceramic Pro Marine je antivegetativna zaštita bez organokalajnih jedinjenja, s tipskim odobrenjem Bureau Veritas prema IMO MEPC.195(61). Iznad vodene linije posao je drugi — Bravo štiti gelkot i lak od soli i UV — a staklo dobija Squall. Šta vašem plovilu treba zavisi od toga gdje provodi vrijeme, a to utvrđujemo na pregledu.</p></div>
       </div>
       <div class="faq-i">
         <button class="faq-q" data-track="faq_open">Šta garancija zapravo pokriva?</button>
