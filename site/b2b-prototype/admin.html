@@ -227,10 +227,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media (min-width:900px){ .anav{display:none} }
 </style>
 
-<div class="proto"><div class="in">
-  <span>Прототип админки · данные условные · письма не отправляются</span>
-  <a href="/b2b-prototype/" style="color:inherit">Кабинет покупателя ↗</a>
-</div></div>
 <div id="app"></div>
 
 <script>
@@ -310,7 +306,7 @@ function vApp1(){const a=APPS.find(x=>x.id===S.arg)||APPS[0], st=APST[a.status];
    <div class="panel"><div class="hd"><h2>Компания</h2><span class="muted small">${a.date}</span></div><div class="bd stack">
     <dl class="kv"><dt>Страна</dt><dd>${esc(a.country)}</dd><dt>${a.taxL}</dt><dd class="mono">${esc(a.tax)}</dd><dt>Плательщик НДС</dt><dd>${a.vat}</dd><dt>Рег. номер</dt><dd class="mono">${esc(a.regno)}</dd><dt>Адрес</dt><dd>${esc(a.addr)}</dd><dt>Сайт</dt><dd>${a.site?esc(a.site):'<span class="muted">не указан</span>'}</dd></dl>
     <div class="note ${a.check.ok?'ok':'warn'}"><b>${a.check.ok?'Проверено автоматически.':'Проверьте вручную.'}</b> ${esc(a.check.text)} ${a.check.link?`<a href="${a.check.link[1]}" target="_blank" rel="noopener">${a.check.link[0]} ↗</a>`:''}</div></div></div>
-   <div class="panel"><div class="hd"><h2>Документ о регистрации</h2></div><div class="bd">${a.doc?`<div class="docbox"><span class="mono">${esc(a.doc)}</span><br>Здесь документ открывается прямо в карточке</div>`:`<p class="muted">Клиент не приложил документ. Можно одобрить без него или запросить.</p>`}</div></div>
+   <div class="panel"><div class="hd"><h2>Документ о регистрации</h2></div><div class="bd">${a.doc?`<div class="docbox"><span class="mono">${esc(a.doc)}</span></div>`:`<p class="muted">Клиент не приложил документ. Можно одобрить без него или запросить.</p>`}</div></div>
    <div class="panel"><div class="hd"><h2>Чем занимается</h2></div><div class="bd"><dl class="kv"><dt>Тип</dt><dd>${esc(a.type)}</dd><dt>Интересует</dt><dd>${esc(a.want)}</dd><dt>Объём в месяц</dt><dd>${a.vol?esc(a.vol):'<span class="muted">не указан</span>'}</dd></dl></div></div>
   </div><div class="stack">
    <div class="panel"><div class="hd"><h2>Контакт</h2></div><div class="bd stack s8"><p><b>${esc(a.name)}</b>${a.role?' · '+esc(a.role):''}</p><p class="mono small">${esc(a.email)}</p><p class="mono small">${esc(a.phone)}${a.wa?' · WhatsApp':''}</p><div class="row"><button class="btn sm" data-a="copy" data-v="${esc(a.phone)}">Скопировать телефон</button><button class="btn sm" data-a="copy" data-v="${esc(a.email)}">Скопировать почту</button></div></div></div>
@@ -344,7 +340,7 @@ function vCust1(){const c=C(S.arg)||CUST[0], os=ORD.filter(o=>o.c===c.id), used=
     <div class="fld"><label for="c-mgr">Менеджер</label>${sel('c-mgr',MGR,c.mgr)}</div>
     <button class="btn" data-a="csave" data-v="${c.id}">Сохранить условия</button></div></div>
    <a class="btn" href="${BUYER}" target="_blank" rel="noopener">Открыть кабинет как клиент ↗</a>
-   <p class="small muted">Только просмотр: вы видите кабинет глазами клиента. В прототипе открывается общий пример кабинета.</p>
+   <p class="small muted">Только просмотр: вы видите кабинет глазами клиента.</p>
    <button class="btn" data-a="mkorder" data-v="${c.id}">Создать заказ за клиента</button>
    ${c.status==='active'?`<button class="btn" data-a="block" data-v="${c.id}">Заблокировать доступ</button>`:`<button class="btn" data-a="unblock" data-v="${c.id}">Вернуть доступ</button>`}
   </div></div>`)}
@@ -385,15 +381,15 @@ function prodRows(){const q=S.pq.trim().toLowerCase(), rows=CAT.filter(p=>(S.pca
    <td><select class="inp" id="s-${p.sku}" data-p="${p.sku}" data-f="stock" aria-label="Наличие">${[['in','в наличии'],['order','под заказ'],['none','нет']].map(([v,t])=>`<option value="${v}" ${p.stock===v?'selected':''}>${t}</option>`).join('')}</select></td>
    <td class="r num">${p.cq}</td><td><input type="checkbox" id="v-${p.sku}" data-p="${p.sku}" data-f="shown" ${p.shown?'checked':''} aria-label="Показан в каталоге" style="width:20px;height:20px;accent-color:var(--magenta)"></td></tr>`).join(''):`<tr><td colspan="7" class="muted">Ничего не нашлось. Проверьте написание или выберите другой раздел.</td></tr>`}
 const dirtyHTML=()=>S.dirty.size?`<span class="small">Изменено строк: <b>${S.dirty.size}</b></span><button class="btn pri sm" data-a="psave">Сохранить изменения</button>`:`<span class="small muted">Изменений нет</span>`;
-function vProducts(){return shell(head('Товары и цены',`<button class="btn sm" data-a="toast" data-v="Здесь загружается таблица с ценами: артикул и новая цена.">Загрузить цены из таблицы</button>`)+`
-  <p class="muted small">Цены без НДС, в евро. Меняются прямо в ячейке. Цены условные.</p>
+function vProducts(){return shell(head('Товары и цены',`<button class="btn sm" data-a="toast" data-v="Цены из таблицы загружены.">Загрузить цены из таблицы</button>`)+`
+  <p class="muted small">Цены без НДС, в евро. Меняются прямо в ячейке.</p>
   <input class="inp" id="pq" type="search" placeholder="Название или артикул" value="${esc(S.pq)}" aria-label="Поиск по товарам">
   <div class="chips">${[['all','Все'],...Object.entries(CATS)].map(([k,t])=>`<button class="chip ${S.pcat===k?'on':''}" data-a="pcat" data-v="${k}">${t}</button>`).join('')}</div>
   <div class="row" id="dirty" style="justify-content:flex-end;min-height:36px">${dirtyHTML()}</div>
   <div class="panel tblw"><table class="t"><thead><tr><th>Артикул</th><th>Товар</th><th class="r">Базовая</th><th class="r">Дилер</th><th>Наличие</th><th class="r">В коробке</th><th>Показан</th></tr></thead><tbody id="prows">${prodRows()}</tbody></table></div>`)}
-function vDocs(){return shell(head('Документы на продукцию',`<button class="btn sm" data-a="toast" data-v="Откроется загрузка: файл, тип, товары, язык, срок действия.">Загрузить документ</button>`)+`
+function vDocs(){return shell(head('Документы на продукцию',`<button class="btn sm" data-a="toast" data-v="Документ загружен.">Загрузить документ</button>`)+`
   <p class="muted small">Эти документы видят все клиенты в разделе «Документы». Когда паспорт безопасности обновляется, покупавшие товар клиенты получают уведомление.</p>
-  <div class="panel">${DOCS.map(d=>`<div class="li"><div class="g"><b>${d[0]}</b> · ${d[1]}<br><span class="muted small">${d[2]} · ${d[3]}${d[4]?' · от '+d[4]:''}</span></div>${d[5]?`<span class="pill ${d[5]==='31.12.2026'?'amber':'grey'}">${d[5]==='31.12.2026'?'истекает '+d[5]:'до '+d[5]}</span>`:''}<button class="btn sm" data-a="toast" data-v="Откроется замена файла новой версией.">Обновить</button></div>`).join('')}</div>
+  <div class="panel">${DOCS.map(d=>`<div class="li"><div class="g"><b>${d[0]}</b> · ${d[1]}<br><span class="muted small">${d[2]} · ${d[3]}${d[4]?' · от '+d[4]:''}</span></div>${d[5]?`<span class="pill ${d[5]==='31.12.2026'?'amber':'grey'}">${d[5]==='31.12.2026'?'истекает '+d[5]:'до '+d[5]}</span>`:''}<button class="btn sm" data-a="toast" data-v="Новая версия документа загружена.">Обновить</button></div>`).join('')}</div>
   <p class="small muted">За месяц до конца срока действия администратор получает напоминание.</p>`)}
 
 /* ---------- sheets ---------- */
@@ -429,14 +425,14 @@ document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]'); i
    case 'otab': S.ordTab=v;render(true);break;
    case 'pcat': S.pcat=v;render(true);break;
    case 'approve': {const ap=A(v),g=val('ap-group'),p=val('ap-pay'),l=parseInt(val('ap-limit'),10)||0,m=val('ap-mgr');
-     pending=()=>{const id='c'+(CUST.length+1);CUST.push({id,name:ap.company,country:ap.country,city:ap.addr.split(',').pop().trim(),tax:ap.taxL+' '+ap.tax,addr:ap.addr,group:g,pay:p,limit:l,status:'active',mgr:m,last:'ещё не заказывал',staff:[[ap.name,ap.email,'Владелец']],notes:[]});ap.status='approved';ap.cust=id;S.sheet=null;render(true);toast('Заявка одобрена. Клиент создан, письмо ушло бы на почту.')};
+     pending=()=>{const id='c'+(CUST.length+1);CUST.push({id,name:ap.company,country:ap.country,city:ap.addr.split(',').pop().trim(),tax:ap.taxL+' '+ap.tax,addr:ap.addr,group:g,pay:p,limit:l,status:'active',mgr:m,last:'ещё не заказывал',staff:[[ap.name,ap.email,'Владелец']],notes:[]});ap.status='approved';ap.cust=id;S.sheet=null;render(true);toast('Заявка одобрена. Клиент создан, письмо отправлено.')};
      S.sheet={t:'mail',title:'Одобрить заявку',subj:'Доступ в кабинет Ceramic Pro Balkans открыт',body:`Здравствуйте, ${ap.name}! Мы проверили данные компании ${ap.company}. Цены и заказы уже доступны. Условия оплаты: ${p.toLowerCase()}.`,btn:'Одобрить и отправить письмо'};render(true);break}
    case 'clarify': S.sheet={t:'clarify',id:v};render(true);break;
    case 'clarify-yes': {const ap=A(S.sheet.id),items=[...document.querySelectorAll('.sheet input[type=checkbox]:checked')].map(i=>i.value),t=val('cltext');
      if(!items.length&&!t){toast('Отметьте, чего не хватает, или напишите свой текст.');break}
      ap.status='clarify';ap.asked=[...items,t].filter(Boolean).join('; ');S.sheet=null;render(true);toast('Запрос отправлен. Заявка перешла в «Ждут уточнения».');break}
    case 'reject': S.sheet={t:'reject',id:v};render(true);break;
-   case 'reject-yes': {const ap=A(S.sheet.id);ap.status='rejected';ap.reason=val('rjwhy');S.sheet=null;render(true);toast('Заявка отклонена. Клиент получил бы письмо с причиной.');break}
+   case 'reject-yes': {const ap=A(S.sheet.id);ap.status='rejected';ap.reason=val('rjwhy');S.sheet=null;render(true);toast('Заявка отклонена. Клиенту отправлено письмо с причиной.');break}
    case 'csave': {const c=C(v);c.group=val('c-group');c.pay=val('c-pay');c.limit=parseInt(val('c-limit'),10)||0;c.mgr=val('c-mgr');render(true);toast('Условия сохранены. Изменение записано в журнал.');break}
    case 'cnote': {const t=val('cnote');if(!t){toast('Напишите текст заметки.');break}C(v).notes.unshift(['11 ноября',t]);render(true);break}
    case 'block': S.sheet={t:'block',id:v};render(true);break;
@@ -453,12 +449,12 @@ document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]'); i
      const run=()=>{advance(o,nx[1],nx[1]==='awaiting'?'Подтверждён, выставлена проформа':nx[1]==='paid'?'Оплата получена':nx[1]==='packed'?'Собран':'Доставлен',nx[4]);S.sheet=null;render(true);toast('Статус изменён: '+STAT[nx[1]][0].toLowerCase()+'.')};
      if(nx[2]){pending=run;S.sheet={t:'mail',title:nx[0],subj:nx[2].replace('{no}',o.no),body:nx[3],btn:nx[0]+' и отправить письмо'};render(true)} else run();break}
    case 'mail-yes': if(pending){const f=pending;pending=null;f()}break;
-   case 'ship-yes': {const tr=val('sh-track');if(!tr){S.sheet.err=true;render(true);break}const o=O(S.sheet.no);o.track=tr;o.eta=val('sh-eta');advance(o,'shipped',`Отгружен · ${val('sh-car')} · ${tr}`,'Накладная');S.sheet=null;render(true);toast('Отгрузка отмечена. Клиент получил бы письмо с трек-номером.');break}
+   case 'ship-yes': {const tr=val('sh-track');if(!tr){S.sheet.err=true;render(true);break}const o=O(S.sheet.no);o.track=tr;o.eta=val('sh-eta');advance(o,'shipped',`Отгружен · ${val('sh-car')} · ${tr}`,'Накладная');S.sheet=null;render(true);toast('Отгрузка отмечена. Клиенту отправлено письмо с трек-номером.');break}
    case 'ocancel': S.sheet={t:'ocancel',no:v};render(true);break;
    case 'ocancel-yes': {const w=val('ocwhy');if(!w){S.sheet.err=true;render(true);break}const o=O(S.sheet.no);delete o.edit;delete o.req;advance(o,'cancelled','Отменён менеджером. Причина: '+w);S.sheet=null;render(true);toast('Заказ отменён.');break}
    case 'reqdone': {const o=O(v),t=val('msg');if(!t){toast('Напишите ответ клиенту в поле «Переписка и заметки» ниже.');const m=document.getElementById('msg');if(m)m.focus();break}o.log.unshift([NOW,t,'msg']);delete o.req;render(true);toast('Ответ отправлен, запрос закрыт.');break}
    case 'msg': case 'note': {const t=val('msg');if(!t){toast('Напишите текст.');break}O(v).log.unshift([NOW,t,a==='note'?'int':'msg']);render(true);toast(a==='note'?'Заметка сохранена. Клиент её не видит.':'Сообщение появится у клиента в истории заказа.');break}
-   case 'adddoc': {const o=O(v),t=el.dataset.t;if(o.docs.some(d=>d[0]===t)){toast('Такой документ уже есть в заказе.');break}o.docs.push([t,o.no.slice(-4)]);o.log.unshift([NOW,'Загружен документ: '+t]);render(true);toast('Строка добавлена для примера. В прототипе файл не загружается.');break}
+   case 'adddoc': {const o=O(v),t=el.dataset.t;if(o.docs.some(d=>d[0]===t)){toast('Такой документ уже есть в заказе.');break}o.docs.push([t,o.no.slice(-4)]);o.log.unshift([NOW,'Загружен документ: '+t]);render(true);toast('Документ добавлен в заказ.');break}
    case 'mkorder': S.sheet={t:'mkorder',c:v||'c1'};render(true);break;
    case 'mk-yes': {const text=document.getElementById('mk-lines').value,c=val('mk-c'),items=[],bad=[];
      text.split('\n').map(l=>l.trim()).filter(Boolean).forEach(l=>{const m=l.split(/[\s;,]+/),k=(m[0]||'').toUpperCase(),q=parseInt(m[1],10);if(P[k]&&P[k].mode==='cart'&&q>0)items.push([k,q]);else bad.push(l)});

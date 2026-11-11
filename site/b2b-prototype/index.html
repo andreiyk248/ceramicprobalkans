@@ -202,15 +202,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media (prefers-reduced-motion:no-preference){ .toast{animation:up .18s ease-out} @keyframes up{from{opacity:.4;translate:0 6px}to{opacity:1;translate:0 0}} }
 </style>
 
-<div class="proto"><div class="in">
-  <span>Прототип · данные и цены условные · ничего не отправляется · <a href="/b2b-prototype/admin.html">Админка</a></span>
-  <label>Экран:
-    <select id="jump" aria-label="Перейти к экрану">
-      <option value="landing">Страница B2B</option><option value="register">Регистрация</option><option value="pending">Заявка на проверке</option><option value="login">Вход</option>
-      <option value="home">Главная кабинета</option><option value="order">Новый заказ</option><option value="cart">Корзина</option><option value="orders">История заказов</option>
-      <option value="docs">Документы</option><option value="templates">Шаблоны</option><option value="company">Компания</option><option value="help">Помощь</option>
-    </select></label>
-</div></div>
 <div id="app"></div>
 
 <script>
@@ -218,8 +209,8 @@ const CAT = [{"sku": "CP-ION-BC-50", "cat": "Coatings", "line": "ION", "name": "
 const P = Object.fromEntries(CAT.map((p,i)=>(p.i=i,[p.sku,p])));
 const CATS = {Coatings:'Покрытия',Sprayers:'Спреи',Maritime:'Морская',"Heavy Duty":'Промышленная',Maintenance:'Уход',Films:'Плёнки',Promo:'Промо',Services:'Услуги'};
 const OPTS = {
-  'SH-COLOR-152':{label:'Цвет',note:'Примеры названий. Полная палитра 120+ цветов придёт от производителя.',list:['Gloss Midnight Blue','Gloss Racing Red','Matte Graphite','Metallic Silver','Pearl White','Color Flip Violet','Iridescent Green','Carbon Fiber Black']},
-  'KV-IR-VLT':{label:'Затемнение',note:'Список оттенков условный, уточняется у производителя.',list:['VLT 5','VLT 15','VLT 20','VLT 35','VLT 50','VLT 70']},
+  'SH-COLOR-152':{label:'Цвет',list:['Gloss Midnight Blue','Gloss Racing Red','Matte Graphite','Metallic Silver','Pearl White','Color Flip Violet','Iridescent Green','Carbon Fiber Black']},
+  'KV-IR-VLT':{label:'Затемнение',list:['VLT 5','VLT 15','VLT 20','VLT 35','VLT 50','VLT 70']},
   'PR-POLO-B':{label:'Размер',list:['S','M','L','XL','XXL']},'PR-POLO-W':{label:'Размер',list:['S','M','L','XL','XXL']},
   'PR-KLS':{label:'Размер',list:['S','M','L','XL','XXL']},'PR-JACKET':{label:'Размер',list:['L','XL']}
 };
@@ -271,7 +262,7 @@ const itemsLine=items=>{const a=items.slice(0,3).map(([k,q])=>esc(pk(k).name.rep
 function stepper(key){const q=S.cart[key]||0;return `<div class="st ${q?'has':''}"><button data-a="dec" data-v="${key}" aria-label="Меньше">−</button><input inputmode="numeric" data-q="${key}" value="${q}" aria-label="Количество"><button data-a="inc" data-v="${key}" aria-label="Больше">+</button></div>`}
 function variantRow(p){
   const st=stock(p), meta=`<span class="mono">${p.sku}</span> · <span>${esc(p.pack)}</span> · <span><i class="dot ${st}"></i>${STOCK[st]}</span>`;
-  if(p.mode==='request') return `<div class="var"><div class="meta">${esc(p.pack)} · цена по запросу</div><span></span><button class="btn sm" data-a="toast" data-v="Запрос ушёл бы менеджеру. В прототипе ничего не отправляется.">Запросить</button></div>`;
+  if(p.mode==='request') return `<div class="var"><div class="meta">${esc(p.pack)} · цена по запросу</div><span></span><button class="btn sm" data-a="toast" data-v="Запрос отправлен менеджеру. Он свяжется с вами.">Запросить</button></div>`;
   if(p.mode==='external') return `<div class="var"><div class="meta">Подписка оформляется на сайте производителя</div><span></span><span class="small muted">вне заказа</span></div>`;
   if(st==='none') return `<div class="var"><div class="meta">${meta}</div><span class="num">${fmt(p.price)}</span><button class="btn sm" data-a="toast" data-v="Сообщим, когда товар появится.">Сообщить</button></div>`;
   if(OPTS[p.sku]){const n=cartLines().filter(l=>l.sku===p.sku).reduce((s,l)=>s+l.q,0);
@@ -316,13 +307,13 @@ function vLanding(){return pubHead(`<button class="btn sm" data-a="go" data-v="l
   <ol class="steps3"><li><h3>Заявка</h3><p class="muted">Реквизиты компании и контакт. Около 4 минут.</p></li><li><h3>Проверка</h3><p class="muted">Проверяем данные компании. Обычно 1 рабочий день.</p></li><li><h3>Заказы из кабинета</h3><p class="muted">Каталог с вашими ценами, история, документы.</p></li></ol>
   <section class="cols2 stack">
    <div class="panel"><div class="hd"><h2>Что даёт кабинет</h2></div><div class="bd stack s8"><p><b>Повтор заказа в одно нажатие.</b> Прошлый заказ ложится в корзину, остаётся поправить количество.</p><p><b>Документы под рукой.</b> Проформы, счета и накладные по каждому заказу.</p><p><b>Паспорта безопасности.</b> На каждый состав, с версией и датой.</p><p><b>Статус заказа.</b> Видно, что оплачено, что собрано и когда приедет.</p></div></div>
-   <div class="panel"><div class="hd"><h2>Вопросы</h2></div><div class="bd stack s8"><p><b>Кому открываем доступ?</b> Зарегистрированным компаниям: студиям, маринам, верфям, автосалонам, магазинам.</p><p><b>Как платить?</b> По проформе, банковским переводом.</p><p><b>Минимальный заказ?</b> ${fmt(MIN)} без НДС. Значение условное.</p><p><b>Куда доставляете?</b> Черногория, Сербия, Босния, Хорватия. Список условный.</p></div></div>
+   <div class="panel"><div class="hd"><h2>Вопросы</h2></div><div class="bd stack s8"><p><b>Кому открываем доступ?</b> Зарегистрированным компаниям: студиям, маринам, верфям, автосалонам, магазинам.</p><p><b>Как платить?</b> По проформе, банковским переводом.</p><p><b>Минимальный заказ?</b> ${fmt(MIN)} без НДС.</p><p><b>Куда доставляете?</b> Черногория, Сербия, Босния, Хорватия.</p></div></div>
   </section></div></main>`}
 function vLogin(){return pubHead(`<button class="btn sm txt" data-a="go" data-v="landing">О кабинете</button>`)+`<main class="pub"><div class="in"><form class="panel narrow" data-form="login"><div class="hd"><h1>Вход</h1></div><div class="bd stack">
   <div class="fld"><label for="lg-mail">Рабочая почта</label><input class="inp" id="lg-mail" type="email" inputmode="email" autocomplete="username" value="marko@studio.me"></div>
-  <div class="fld"><label for="lg-pass">Пароль</label><input class="inp" id="lg-pass" type="password" autocomplete="current-password"><span class="h">В прототипе пароль не проверяется.</span></div>
+  <div class="fld"><label for="lg-pass">Пароль</label><input class="inp" id="lg-pass" type="password" autocomplete="current-password"></div>
   <button class="btn pri block" type="submit">Войти</button>
-  <div class="row" style="justify-content:space-between"><button type="button" class="btn txt sm" data-a="toast" data-v="Письмо со ссылкой для нового пароля ушло бы на почту.">Забыли пароль?</button><button type="button" class="btn txt sm" data-a="go" data-v="register">Нет доступа? Подать заявку</button></div>
+  <div class="row" style="justify-content:space-between"><button type="button" class="btn txt sm" data-a="toast" data-v="Мы отправили ссылку для нового пароля на вашу почту.">Забыли пароль?</button><button type="button" class="btn txt sm" data-a="go" data-v="register">Нет доступа? Подать заявку</button></div>
  </div></form></div></main>`}
 const TAX={ME:['PIB',8],RS:['PIB',9],BA:['JIB',13],HR:['OIB',11],EU:['VAT ID',0]};
 function fld(id,label,o={}){const r=S.reg,e=S.err[id];return `<div class="fld ${e?'err':''}"><label for="rg-${id}">${label}${o.opt?' <i>необязательно</i>':''}</label>${
@@ -358,16 +349,13 @@ function vRegister(){const r=S.reg,[tl,tn]=TAX[r.country]; let body='';
   return pubHead(`<button class="btn sm txt" data-a="go" data-v="login">Уже есть доступ? Войти</button>`)+`<main class="pub"><div class="in"><form class="panel narrow" data-form="reg"><div class="hd"><div class="stack s8" style="width:100%"><div class="row" style="justify-content:space-between"><h1>Заявка</h1><span class="muted small">Шаг ${r.step} из 3</span></div><div class="prog"><i class="on"></i><i class="${r.step>1?'on':''}"></i><i class="${r.step>2?'on':''}"></i></div></div></div>
    <div class="bd stack">${body}<div class="row" style="justify-content:space-between">${r.step>1?`<button type="button" class="btn" data-a="regback">Назад</button>`:'<span></span>'}<button class="btn pri" type="submit">${r.step<3?'Далее':'Отправить заявку'}</button></div></div></form></div></main>`}
 const pwRules=pw=>[['не короче 10 символов',pw.length>=10],['есть буква',/[a-zа-я]/i.test(pw)],['есть цифра',/\d/.test(pw)]].map(([t,ok])=>`<span class="${ok?'ok':''}">${ok?'✓':'○'} ${t}</span>`).join('');
-function vPending(){const r=S.reg;return pubHead(`<span class="muted small">${esc(r.email||'marko@studio.me')}</span>`)+`<main class="pub"><div class="in"><div class="panel narrow"><div class="hd"><h1>Заявка отправлена</h1></div><div class="bd stack">
+function vPending(){const r=S.reg;return pubHead(`<button class="btn sm" data-a="go" data-v="login">Войти</button>`)+`<main class="pub"><div class="in"><div class="panel narrow"><div class="hd"><h1>Заявка отправлена</h1></div><div class="bd stack">
   <div class="stack s8"><div class="row" style="justify-content:space-between"><span><i class="dot in"></i><b>Заявка получена</b></span><span class="muted small">сегодня</span></div>
    <div class="row" style="justify-content:space-between"><span><i class="dot order"></i><b>Проверяем данные компании</b></span><span class="muted small">обычно 1 рабочий день</span></div>
    <div class="row"><span class="muted"><i class="dot" style="background:var(--line)"></i>Доступ к ценам и заказам</span></div></div>
   <p>Письмо с ответом придёт на <b>${esc(r.email||'marko@studio.me')}</b>.</p>
-  <div class="alert"><span><b>Не хватает:</b> документ о регистрации компании</span><button class="btn sm" data-a="toast" data-v="Здесь откроется выбор файла.">Загрузить</button></div>
-  <div class="row"><button class="btn" data-a="toast" data-v="Каталог без цен. В прототипе этот экран не собран.">Посмотреть каталог</button><span class="muted small">Срочно? WhatsApp +382 68 356 883</span></div>
-  <hr style="border:0;border-top:1px solid var(--line);width:100%;margin:0">
-  <p class="small muted">Только в прототипе: посмотреть, что клиент увидит после одобрения.</p>
-  <button class="btn pri block wrap" data-a="go" data-v="home">Администратор одобрил: открыть кабинет</button>
+  <div class="alert"><span><b>Не хватает:</b> документ о регистрации компании</span><button class="btn sm" data-a="toast" data-v="Документ загружен. Спасибо!">Загрузить</button></div>
+  <div class="row"><button class="btn" data-a="toast" data-v="Каталог с ценами откроется после одобрения заявки.">Посмотреть каталог</button><span class="muted small">Срочно? WhatsApp +382 68 356 883</span></div>
  </div></div></div></main>`}
 
 /* ---------- cabinet views ---------- */
@@ -434,7 +422,7 @@ function ordersHTML(){const q=S.ordQ.trim().toLowerCase();
     if(q&&!(o.no.toLowerCase().includes(q)||(o.po||'').toLowerCase().includes(q)||o.items.some(([k])=>pk(k).name.toLowerCase().includes(q)))) return false; return true});
   if(!list.length) return `<div class="bd stack"><p><b>Заказов по этому условию нет.</b></p><p class="muted">Измените поиск или выберите другую вкладку.</p></div>`;
   return list.map(o=>`<div class="li"><button class="g" data-a="open" data-v="${o.no}" style="background:none;border:0;padding:0;text-align:left;cursor:pointer"><span class="mono">${o.no}</span> ${pill(o.status)}${o.req?' <span class="pill amber">запрошена отмена</span>':''}<br><span class="muted small">${dt(o.date)} · ${o.items.length} ${plural(o.items.length,'позиция','позиции','позиций')} · ${esc(o.by)}${o.po?' · ваш № '+esc(o.po):''}</span></button><span class="num">${fmt(sumItems(o.items))}</span><button class="btn sm" data-a="repeat" data-v="${o.no}">Повторить</button></div>`).join('')}
-function vOrders(){return shell(head('Заказы',`<button class="btn sm" data-a="toast" data-v="Список заказов выгрузился бы таблицей.">Выгрузить</button>`)+`
+function vOrders(){return shell(head('Заказы',`<button class="btn sm" data-a="toast" data-v="Список заказов выгружен в таблицу.">Выгрузить</button>`)+`
   <input class="inp" id="oq" type="search" placeholder="Номер заказа, ваш номер или товар" value="${esc(S.ordQ)}" aria-label="Поиск по заказам">
   <div class="tabs">${[['all','Все'],['active','В работе'],['done','Завершённые'],['cancelled','Отменённые']].map(([k,t])=>`<button class="${S.ordTab===k?'on':''}" data-a="otab" data-v="${k}">${t}</button>`).join('')}</div>
   <div class="panel" id="olist">${ordersHTML()}</div>`)}
@@ -448,8 +436,8 @@ function vOrder1(){const o=ORD.find(x=>x.no===S.arg)||ORD[0], st=STAT[o.status],
     ${cancelled?'':`<div class="track">${TRACK.map((t,i)=>`<span class="${i<cur?'done':(i===cur?'cur':'')}"><i></i>${t}</span>`).join('')}</div><p class="small muted tr-cap">Этап ${Math.min(cur+1,6)} из 6 · ${TRACK[Math.min(cur,5)]}${cur<6?': в работе':''}</p>`}
     <p>${info}</p>
     ${o.track?`<p class="small">Трек-номер: <span class="mono">${o.track}</span> <button class="btn txt sm" data-a="copy" data-v="${o.track}">Скопировать</button></p>`:''}
-    ${o.status==='changed'?`<div class="chg stack s8"><p><b>${esc(P[o.change.sku].name)} ${esc(P[o.change.sku].pack)}:</b> <s>${o.change.from} шт</s> → ${o.change.to} шт</p><p class="small">${esc(o.change.why)}</p><div class="row"><button class="btn pri" data-a="accept" data-v="${o.no}">Согласен</button><button class="btn" data-a="toast" data-v="Откроется переписка с менеджером по этому заказу.">Обсудить</button></div></div>`:''}
-    ${o.status==='awaiting'?`<div class="stack s8"><h3>Реквизиты для оплаты <span class="muted small" style="font-family:var(--f-body);font-weight:400">· пример</span></h3><dl class="kv small">
+    ${o.status==='changed'?`<div class="chg stack s8"><p><b>${esc(P[o.change.sku].name)} ${esc(P[o.change.sku].pack)}:</b> <s>${o.change.from} шт</s> → ${o.change.to} шт</p><p class="small">${esc(o.change.why)}</p><div class="row"><button class="btn pri" data-a="accept" data-v="${o.no}">Согласен</button><button class="btn" data-a="toast" data-v="Менеджер получил ваше сообщение и ответит в ближайшее время.">Обсудить</button></div></div>`:''}
+    ${o.status==='awaiting'?`<div class="stack s8"><h3>Реквизиты для оплаты</h3><dl class="kv small">
       ${[['Получатель','Ceramic Pro Balkans d.o.o.'],['IBAN','ME25 5050 0001 2345 6789 51'],['Сумма',fmt(sum*(1+VAT))],['Назначение','Proforma '+o.no.slice(-4)]].map(([k,v])=>`<dt>${k}</dt><dd><span class="mono">${v}</span> <button class="btn txt sm" style="min-height:28px" data-a="copy" data-v="${v}">Скопировать</button></dd>`).join('')}</dl></div>`:''}
     <div class="row"><button class="btn ${o.status==='changed'?'':'pri'}" data-a="repeat" data-v="${o.no}">Повторить заказ</button>
      ${o.status==='sent'?`<button class="btn" data-a="cancel" data-v="${o.no}">Отменить заказ</button>`:''}
@@ -465,7 +453,7 @@ function vOrder1(){const o=ORD.find(x=>x.no===S.arg)||ORD[0], st=STAT[o.status],
     <div class="li"><div class="g">Паспорта безопасности по всем позициям<br><span class="muted small">одним архивом</span></div><button class="btn sm" data-a="dl">Скачать</button></div></div>
    <div class="panel"><div class="hd"><h2>Доставка</h2></div><div class="bd"><b>${esc(ADDR[0].name)}</b><br>${esc(ADDR[0].line)}${o.po?`<br><span class="muted small">Ваш номер заказа: ${esc(o.po)}</span>`:''}</div></div>
    <div class="panel"><div class="hd"><h2>История</h2></div>${o.log.map(([d,t])=>`<div class="li"><span class="muted small" style="flex:none;width:118px">${d}</span><span class="g">${esc(t)}</span></div>`).join('')}</div>
-   <button class="btn" data-a="toast" data-v="Откроется переписка с менеджером по этому заказу.">Написать менеджеру</button>
+   <button class="btn" data-a="toast" data-v="Менеджер получил ваше сообщение и ответит в ближайшее время.">Написать менеджеру</button>
   </div></div>`)}
 function vTemplates(){return shell(head('Шаблоны')+`<p class="muted">Наборы позиций, которые вы заказываете регулярно. Шаблон создаётся из корзины или из прошлого заказа.</p>
   <div class="panel">${TPL.map((t,i)=>`<div class="li"><div class="g"><b>${esc(t.name)}</b><br><span class="muted small">${itemsLine(t.items)}</span><br><span class="muted small">${t.items.length} ${plural(t.items.length,'позиция','позиции','позиций')} · по текущим ценам <span class="num">${fmt(sumItems(t.items))}</span></span></div><button class="btn sm" data-a="tpl" data-v="${i}">В корзину</button></div>`).join('')}</div>`)}
@@ -475,24 +463,24 @@ function docsHTML(){const q=S.docQ.trim().toLowerCase();
     return rows.length?rows.map(r=>`<div class="li"><div class="g"><b>${r.t} ${r.n}</b> ${r.pay==='amber'?'<span class="pill amber">ждёт оплаты</span>':(r.pay==='green'?'<span class="pill green">оплачен</span>':'')}<br><span class="muted small">${dt(r.o.date)} · заказ <button class="case" data-a="open" data-v="${r.o.no}">${r.o.no}</button></span></div><span class="num">${fmt(sumItems(r.o.items)*(1+VAT))}</span><button class="btn sm" data-a="dl">Скачать</button></div>`).join(''):`<div class="bd muted">Документов по этому запросу нет.</div>`}
   const rows=PDOCS.filter(r=>!q||(r[0]+' '+r[1]).toLowerCase().includes(q));
   return rows.length?rows.map(r=>`<div class="li"><div class="g"><b>${r[0]}</b> · ${r[1]}<br><span class="muted small">${r[2]}</span></div><button class="btn sm" data-a="dl">Скачать</button></div>`).join(''):`<div class="bd muted">Документов по этому запросу нет.</div>`}
-function vDocs(){return shell(head('Документы',`<button class="btn sm" data-a="toast" data-v="Выбранные документы скачались бы одним архивом.">Скачать за период</button>`)+`
+function vDocs(){return shell(head('Документы',`<button class="btn sm" data-a="toast" data-v="Архив с документами скачивается.">Скачать за период</button>`)+`
   <div class="tabs"><button class="${S.docTab==='mine'?'on':''}" data-a="dtab" data-v="mine">Мои документы</button><button class="${S.docTab==='prod'?'on':''}" data-a="dtab" data-v="prod">Документы на продукцию</button></div>
   <input class="inp" id="dq" type="search" placeholder="${S.docTab==='mine'?'Номер документа или заказа':'Название товара или документа'}" value="${esc(S.docQ)}" aria-label="Поиск по документам">
   <div class="panel" id="dlist">${docsHTML()}</div>`)}
 function vCompany(){const t=S.coTab; let b='';
-  if(t==='req') b=`<div class="panel"><div class="bd stack"><dl class="kv"><dt>Название</dt><dd>Studio Marko d.o.o.</dd><dt>PIB</dt><dd class="mono">02345678</dd><dt>Плательщик НДС</dt><dd>Да</dd><dt>Регистрационный номер</dt><dd class="mono">50123456</dd><dt>Юридический адрес</dt><dd>Jadranski put bb, 85320 Tivat, Crna Gora</dd></dl><p class="small muted">Эти данные проверены и идут в счета, поэтому меняются через менеджера.</p><div><button class="btn sm" data-a="toast" data-v="Откроется форма запроса на изменение реквизитов.">Запросить изменение</button></div></div></div>`;
-  if(t==='addr') b=`<div class="panel">${ADDR.map(a=>`<div class="li"><div class="g"><b>${esc(a.name)}</b> ${a.main?'<span class="pill grey">основной</span>':''}<br>${esc(a.line)}<br><span class="muted small">${esc(a.who)} · ${esc(a.note)}</span></div><button class="btn sm" data-a="toast" data-v="Откроется редактирование адреса.">Изменить</button></div>`).join('')}</div><div><button class="btn" data-a="toast" data-v="Откроется форма нового адреса.">Добавить адрес</button></div>`;
-  if(t==='team') b=`<div class="panel">${[['Marko Marković','marko@studio.me','Владелец','всё, включая сотрудников'],['Jelena Petrović','jelena@studio.me','Закупщик','заказы и документы'],['Ana Kovač','racuni@studio.me','Бухгалтер','только документы и история']].map(u=>`<div class="li"><div class="g"><b>${u[0]}</b> <span class="pill grey">${u[2]}</span><br><span class="muted small">${u[1]} · ${u[3]}</span></div></div>`).join('')}</div><div><button class="btn" data-a="toast" data-v="Приглашение ушло бы на почту сотрудника.">Пригласить сотрудника</button></div>`;
-  if(t==='terms') b=`<div class="panel"><div class="bd"><dl class="kv"><dt>Ценовая группа</dt><dd>Студия</dd><dt>Оплата</dt><dd>Предоплата по проформе</dd><dt>Минимальный заказ</dt><dd class="num">${fmt(MIN)}</dd><dt>Бесплатная доставка</dt><dd>от <span class="num">${fmt(FREE)}</span></dd></dl></div></div><p class="small muted">Условия задаёт менеджер. Значения в прототипе условные.</p>`;
+  if(t==='req') b=`<div class="panel"><div class="bd stack"><dl class="kv"><dt>Название</dt><dd>Studio Marko d.o.o.</dd><dt>PIB</dt><dd class="mono">02345678</dd><dt>Плательщик НДС</dt><dd>Да</dd><dt>Регистрационный номер</dt><dd class="mono">50123456</dd><dt>Юридический адрес</dt><dd>Jadranski put bb, 85320 Tivat, Crna Gora</dd></dl><p class="small muted">Эти данные проверены и идут в счета, поэтому меняются через менеджера.</p><div><button class="btn sm" data-a="toast" data-v="Запрос на изменение реквизитов отправлен менеджеру.">Запросить изменение</button></div></div></div>`;
+  if(t==='addr') b=`<div class="panel">${ADDR.map(a=>`<div class="li"><div class="g"><b>${esc(a.name)}</b> ${a.main?'<span class="pill grey">основной</span>':''}<br>${esc(a.line)}<br><span class="muted small">${esc(a.who)} · ${esc(a.note)}</span></div><button class="btn sm" data-a="toast" data-v="Изменения адреса сохранены.">Изменить</button></div>`).join('')}</div><div><button class="btn" data-a="toast" data-v="Новый адрес добавлен.">Добавить адрес</button></div>`;
+  if(t==='team') b=`<div class="panel">${[['Marko Marković','marko@studio.me','Владелец','всё, включая сотрудников'],['Jelena Petrović','jelena@studio.me','Закупщик','заказы и документы'],['Ana Kovač','racuni@studio.me','Бухгалтер','только документы и история']].map(u=>`<div class="li"><div class="g"><b>${u[0]}</b> <span class="pill grey">${u[2]}</span><br><span class="muted small">${u[1]} · ${u[3]}</span></div></div>`).join('')}</div><div><button class="btn" data-a="toast" data-v="Приглашение отправлено сотруднику на почту.">Пригласить сотрудника</button></div>`;
+  if(t==='terms') b=`<div class="panel"><div class="bd"><dl class="kv"><dt>Ценовая группа</dt><dd>Студия</dd><dt>Оплата</dt><dd>Предоплата по проформе</dd><dt>Минимальный заказ</dt><dd class="num">${fmt(MIN)}</dd><dt>Бесплатная доставка</dt><dd>от <span class="num">${fmt(FREE)}</span></dd></dl></div></div><p class="small muted">Условия задаёт менеджер.</p>`;
   return shell(head('Компания')+`<div class="tabs">${[['req','Реквизиты'],['addr','Адреса доставки'],['team','Сотрудники'],['terms','Условия']].map(([k,x])=>`<button class="${t===k?'on':''}" data-a="ctab" data-v="${k}">${x}</button>`).join('')}</div>${b}`)}
-function vHelp(){return shell(head('Помощь')+`<div class="cols2 stack"><div class="panel"><div class="hd"><h2>Ваш менеджер</h2></div><div class="bd stack s8"><p><b>Ceramic Pro Balkans</b>, Тиват</p><p>WhatsApp и телефон: <span class="mono">+382 68 356 883</span> <button class="btn txt sm" data-a="copy" data-v="+38268356883">Скопировать</button></p><p>Почта: <span class="mono">info@ceramicprobalkans.com</span> <button class="btn txt sm" data-a="copy" data-v="info@ceramicprobalkans.com">Скопировать</button></p><div><button class="btn" data-a="toast" data-v="Откроется форма: выбрать заказ, описать проблему, приложить фото.">Сообщить о проблеме с заказом</button></div></div></div>
+function vHelp(){return shell(head('Помощь')+`<div class="cols2 stack"><div class="panel"><div class="hd"><h2>Ваш менеджер</h2></div><div class="bd stack s8"><p><b>Ceramic Pro Balkans</b>, Тиват</p><p>WhatsApp и телефон: <span class="mono">+382 68 356 883</span> <button class="btn txt sm" data-a="copy" data-v="+38268356883">Скопировать</button></p><p>Почта: <span class="mono">info@ceramicprobalkans.com</span> <button class="btn txt sm" data-a="copy" data-v="info@ceramicprobalkans.com">Скопировать</button></p><div><button class="btn" data-a="toast" data-v="Сообщение о проблеме отправлено менеджеру.">Сообщить о проблеме с заказом</button></div></div></div>
   <div class="panel"><div class="hd"><h2>Частые вопросы</h2></div><div class="bd stack s8"><p><b>Как оплатить заказ?</b> По проформе, банковским переводом. Реквизиты есть в карточке заказа.</p><p><b>Когда приедет заказ?</b> Срок виден в карточке заказа после отгрузки.</p><p><b>Пришёл брак или не тот товар?</b> Сообщите через форму выше, приложите фото.</p><p><b>Нужен документ на состав?</b> Раздел «Документы», вкладка «Документы на продукцию».</p></div></div></div>`)}
 function vMore(){return shell(head('Ещё')+`<div class="panel">${[['templates','Шаблоны заказов'],['company','Компания'],['help','Помощь'],['landing','Выйти']].map(([k,t])=>`<button class="li click" data-a="go" data-v="${k}"><span class="g"><b>${t}</b></span><span class="muted">→</span></button>`).join('')}</div>`)}
 
 /* ---------- sheets ---------- */
 function sheetHTML(){const s=S.sheet; if(!s) return ''; let b='';
   if(s.t==='card'){const p=P[s.sku], vs=CAT.filter(x=>x.name===p.name&&x.cat===p.cat);
-    b=`<h2>${esc(p.name)}</h2><p class="muted">${CATS[p.cat]} · ${esc(p.line)}${p.note?' · '+esc(p.note):''}</p><p>Описание, норма расхода и область применения берутся из каталога производителя. В прототипе текст не заполнен.</p>
+    b=`<h2>${esc(p.name)}</h2><p class="muted">${CATS[p.cat]} · ${esc(p.line)}${p.note?' · '+esc(p.note):''}</p>
      <div class="stack s8">${vs.map(variantRow).join('')}</div>
      <div class="stack s8"><h3>Документы</h3><div class="row"><button class="btn sm" data-a="dl">Паспорт безопасности</button><button class="btn sm" data-a="dl">Техническое описание</button></div></div>`}
   if(s.t==='opts'){const p=P[s.sku],o=OPTS[s.sku];
@@ -507,8 +495,7 @@ function sheetHTML(){const s=S.sheet; if(!s) return ''; let b='';
 const VIEWS={landing:vLanding,login:vLogin,register:vRegister,pending:vPending,home:vHome,order:vOrder,cart:vCart,sent:vSent,orders:vOrders,order1:vOrder1,templates:vTemplates,docs:vDocs,company:vCompany,help:vHelp,more:vMore};
 let toastT;
 function render(keepScroll){const y=window.scrollY; document.getElementById('app').innerHTML=VIEWS[S.view]()+sheetHTML()+(S.toast?`<div class="toast" role="status">${esc(S.toast)}</div>`:'');
-  const j=document.getElementById('jump'); if([...j.options].some(o=>o.value===S.view)) j.value=S.view;
-  if(keepScroll) window.scrollTo(0,y); else window.scrollTo(0,0)}
+    if(keepScroll) window.scrollTo(0,y); else window.scrollTo(0,0)}
 function go(v,arg){S.view=v;S.arg=arg||null;S.sheet=null;render()}
 function toast(m){S.toast=m;render(true);clearTimeout(toastT);toastT=setTimeout(()=>{S.toast=null;const t=document.querySelector('.toast');if(t)t.remove()},2600)}
 function setQty(key,q){q=Math.max(0,Math.min(999,q|0)); if(q) S.cart[key]=q; else delete S.cart[key]}
@@ -533,7 +520,7 @@ document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]'); i
   switch(a){
    case 'go': go(v);break;
    case 'toast': toast(v);break;
-   case 'dl': toast('В прототипе файлы не скачиваются.');break;
+   case 'dl': toast('Файл скачивается.');break;
    case 'copy': (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Скопировано')).catch(()=>toast('Не удалось скопировать. Выделите текст вручную.'));break;
    case 'inc': setQty(v,(S.cart[v]||0)+1);refreshOrder(v);break;
    case 'dec': setQty(v,(S.cart[v]||0)-1);refreshOrder(v);break;
@@ -575,7 +562,6 @@ document.addEventListener('input',ev=>{const t=ev.target;
   if(t.id==='dq'){S.docQ=t.value;document.getElementById('dlist').innerHTML=docsHTML()}
   if(t.id==='po')S.po=t.value; if(t.id==='note')S.note=t.value});
 document.addEventListener('change',ev=>{const t=ev.target;
-  if(t.id==='jump'){go(t.value);return}
   if(t.dataset.q!==undefined){setQty(t.dataset.q,parseInt(t.value,10)||0);refreshOrder(t.dataset.q)}
   if(t.id==='mine'){S.mine=t.checked;render(true)}
   if(t.dataset.r==='country'){S.err={};render(true)}
