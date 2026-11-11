@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>B2B-админка Ceramic Pro Balkans</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Saira:wght@600;700&display=swap">
+<style>
+
+/* Layout: order form, not a shop window. Phone: one column + bottom bar. Laptop: left rail, list, sticky order summary. */
+:root{
+  --paper:#FFFFFF; --foam:#F1F5F6; --ink:#231F20; --ink-soft:#465661; --steel:#63757F;
+  --line:#DCE4E8; --line-soft:#EAF0F2; --magenta:#EC008C; --magenta-deep:#C20073; --on-magenta:#FFFFFF;
+  --sea:#0B2430; --on-sea:#E8F1F4; --water:#0E7C99;
+  --ok:#17794A; --warn:#9A5B00; --bad:#B3261E; --info:#0E7C99;
+  --ok-bg:#E4F3EA; --warn-bg:#FBEFD6; --bad-bg:#FBE4E2; --info-bg:#DDF0F5; --mute-bg:#EAF0F2;
+  --f-display:'Saira',system-ui,sans-serif; --f-body:'Manrope',system-ui,sans-serif; --f-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --gx:max(16px, env(safe-area-inset-left, 0px)); --gxr:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#101A20; --foam:#16232B; --ink:#EEF3F5; --ink-soft:#B9C7CE; --steel:#8FA1AA;
+  --line:#2A3A43; --line-soft:#1F2D35; --magenta:#FF3FA9; --magenta-deep:#FF6BBD; --on-magenta:#1A0A12;
+  --sea:#081920; --on-sea:#E8F1F4; --water:#4FB8D3;
+  --ok:#6FD3A0; --warn:#F0BD62; --bad:#F2928B; --info:#6CC6DE;
+  --ok-bg:#16332A; --warn-bg:#3A2D12; --bad-bg:#3D1E1C; --info-bg:#123039; --mute-bg:#1F2D35; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#101A20; --foam:#16232B; --ink:#EEF3F5; --ink-soft:#B9C7CE; --steel:#8FA1AA;
+  --line:#2A3A43; --line-soft:#1F2D35; --magenta:#FF3FA9; --magenta-deep:#FF6BBD; --on-magenta:#1A0A12;
+  --sea:#081920; --on-sea:#E8F1F4; --water:#4FB8D3;
+  --ok:#6FD3A0; --warn:#F0BD62; --bad:#F2928B; --info:#6CC6DE;
+  --ok-bg:#16332A; --warn-bg:#3A2D12; --bad-bg:#3D1E1C; --info-bg:#123039; --mute-bg:#1F2D35; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--foam);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:26px} h2{font-size:19px} h3{font-size:16px}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--steel)} .small{font-size:13px}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* prototype strip */
+.proto{background:var(--sea);color:var(--on-sea);font-size:12.5px}
+.proto .in{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:6px;padding-left:var(--gx);padding-right:var(--gxr)}
+.proto select{background:transparent;color:var(--on-sea);border:1px solid #ffffff55;border-radius:6px;padding:3px 6px;max-width:100%}
+.proto option{color:#111}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:var(--paper);font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--steel)}
+.btn.pri{background:var(--magenta);border-color:var(--magenta);color:var(--on-magenta)}
+.btn.pri:hover{background:var(--magenta-deep);border-color:var(--magenta-deep)}
+.btn.pri[disabled]{background:var(--mute-bg);border-color:var(--line);color:var(--steel);cursor:not-allowed}
+.btn.sm{min-height:36px;padding:0 12px;font-size:13.5px}
+.btn.txt{border-color:transparent;background:transparent;padding:0 8px;color:var(--water)}
+.btn.block{width:100%}
+.btn.wrap{white-space:normal;padding-block:8px;text-align:center}
+
+/* public pages */
+.pub-head{background:var(--paper);border-bottom:1px solid var(--line)}
+.pub-head .in,.pub .in{max-width:1040px;margin:0 auto;padding-left:var(--gx);padding-right:var(--gxr)}
+.pub-head .in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.brand{font-family:var(--f-display);font-weight:700;letter-spacing:.04em;font-size:15px;white-space:nowrap}
+.brand b{color:var(--magenta)}
+.pub .in{padding-block:28px 56px;display:grid;gap:28px}
+.hero h1{font-size:clamp(28px,5.4vw,44px);max-width:16ch}
+.hero p{max-width:60ch;color:var(--ink-soft);margin-top:12px;font-size:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.steps3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));counter-reset:s}
+.steps3 li{list-style:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;counter-increment:s}
+.steps3 li::before{content:counter(s);font-family:var(--f-mono);color:var(--magenta);font-size:13px}
+.steps3{padding:0;margin:0}
+.narrow{max-width:520px;margin:0 auto;width:100%}
+
+/* panels */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.panel{min-width:0}
+.panel>.hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+.panel>.bd{padding:14px 16px}
+.stack{display:grid;gap:14px}
+.stack.s8{gap:8px}
+
+/* forms */
+.fld{display:grid;gap:5px}
+.fld label{font-weight:600;font-size:14px}
+.fld label i{font-style:normal;font-weight:400;color:var(--steel)}
+.inp{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+.inp:focus{outline:2px solid var(--magenta);outline-offset:0;border-color:transparent}
+.fld.err .inp{border-color:var(--bad)}
+.fld .e{color:var(--bad);font-size:13px}
+.fld .h{color:var(--steel);font-size:13px}
+.chk{display:flex;gap:10px;align-items:flex-start;min-height:32px}
+.chk input{width:20px;height:20px;margin-top:1px;accent-color:var(--magenta);flex:none}
+.prog{display:flex;gap:6px}
+.prog i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.prog i.on{background:var(--magenta)}
+.rules{display:flex;gap:6px 12px;flex-wrap:wrap;font-size:13px;color:var(--steel)}
+.rules .ok{color:var(--ok)}
+
+/* app shell */
+.app{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr)}
+.main{min-width:0;padding-block:16px 150px;padding-left:var(--gx);padding-right:var(--gxr);display:grid;gap:16px;align-content:start}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.co{font-weight:700}
+.rail{display:none}
+.tab{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--paper);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tab button{position:relative;border:0;background:none;min-height:54px;font-size:12px;font-weight:600;color:var(--steel);cursor:pointer;padding:0 2px}
+.tab button.on{color:var(--ink)}
+.tab button.on::before{content:"";position:absolute;top:0;left:22%;right:22%;height:2px;background:var(--ink)}
+.tab button.cta{color:var(--magenta)}
+.tab .cnt,.rail .cnt{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:var(--magenta);color:var(--on-magenta);font-size:11px;line-height:18px;font-family:var(--f-mono)}
+
+/* alerts, pills */
+.alert{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;border-radius:10px;background:var(--warn-bg);color:var(--ink);border:1px solid transparent}
+.alert b{color:var(--warn)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.pill.grey{background:var(--mute-bg);color:var(--ink-soft)} .pill.blue{background:var(--info-bg);color:var(--info)}
+.pill.amber{background:var(--warn-bg);color:var(--warn)} .pill.green{background:var(--ok-bg);color:var(--ok)} .pill.red{background:var(--bad-bg);color:var(--bad)}
+
+/* lists */
+.li{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--line-soft);min-width:0}
+.li:first-child{border-top:0}
+.li>.g{min-width:0;flex:1}
+.li.click{cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.li.click:hover{background:var(--foam)}
+.kv{display:grid;grid-template-columns:minmax(96px,34%) minmax(0,1fr);gap:6px 12px}
+.kv dt{color:var(--steel)} .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+
+/* order form */
+.tools{display:grid;gap:10px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chip{flex:none;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-weight:600;font-size:13.5px;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.sec{padding:10px 16px 6px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel);background:var(--foam);border-top:1px solid var(--line-soft)}
+.sec:first-child{border-top:0;border-radius:10px 10px 0 0}
+.prod{padding:10px 16px;border-top:1px solid var(--line-soft);display:grid;gap:6px}
+.prod .nm{background:none;border:0;padding:0;text-align:left;font-weight:600;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.var{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center}
+.var .meta{min-width:0;font-size:13px;color:var(--steel)}
+.var .meta span{white-space:nowrap}
+.st{display:inline-grid;grid-template-columns:40px 46px 40px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper)}
+.st button{height:40px;border:0;background:none;font-size:18px;cursor:pointer}
+.st button:hover{background:var(--foam)}
+.st input{width:46px;height:40px;border:0;border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft);text-align:center;background:none;font-family:var(--f-mono);padding:0}
+.st.has{border-color:var(--ink)}
+.case{background:none;border:0;padding:0;color:var(--water);font-size:12.5px;cursor:pointer;text-decoration:underline}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.dot.in{background:var(--ok)} .dot.order{background:var(--warn)} .dot.none{background:var(--bad)}
+.cartbar{position:fixed;left:0;right:0;bottom:calc(54px + env(safe-area-inset-bottom,0px));z-index:19;background:var(--sea);color:var(--on-sea);display:flex;gap:10px;align-items:center;justify-content:space-between;padding-block:8px;padding-left:var(--gx);padding-right:var(--gxr)}
+.meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--magenta)}
+.tot{display:grid;gap:6px}
+.tot div{display:flex;justify-content:space-between;gap:12px}
+.tot .big{font-weight:700;font-size:17px;padding-top:8px;border-top:1px solid var(--line)}
+.side{display:none}
+.two,.cols2{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+
+/* order status track */
+.track{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;font-size:11.5px;color:var(--steel);text-align:center}
+.track i{display:block;height:4px;border-radius:2px;background:var(--line);margin-bottom:6px}
+.track .done i{background:var(--ink)} .track .cur i{background:var(--magenta)}
+.track .done,.track .cur{color:var(--ink)}
+.track span{font-size:0}
+.track span i{margin-bottom:0}
+.chg{background:var(--warn-bg);border-radius:8px;padding:10px 12px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:none;border:0;background:none;padding:10px 12px;font-weight:600;color:var(--steel);border-bottom:2px solid transparent;cursor:pointer;margin-bottom:-1px}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tblw{overflow-x:auto}
+
+/* sheet + toast */
+.scrim{position:fixed;inset:0;z-index:40;background:#0009;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);width:100%;max-width:560px;max-height:86%;overflow:auto;border-radius:14px 14px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:14px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(120px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px;font-size:14px;max-width:calc(100% - 32px);text-align:center}
+
+@media (min-width:900px){
+  body{font-size:15px}
+  .app{grid-template-columns:228px minmax(0,1fr)}
+  .rail{display:flex;flex-direction:column;gap:2px;padding:20px 12px;border-right:1px solid var(--line);background:var(--paper);min-height:calc(100vh - 34px);position:sticky;top:0;align-self:start}
+  .rail .brand{padding:0 10px 4px}
+  .rail .who{padding:0 10px 14px;color:var(--steel);font-size:13px;border-bottom:1px solid var(--line-soft);margin-bottom:10px}
+  .rail button.nv{border:0;background:none;text-align:left;padding:9px 10px;border-radius:8px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+  .rail button.nv:hover{background:var(--foam)}
+  .rail button.nv.on{background:var(--foam);color:var(--ink)}
+  .rail .mgr{margin-top:auto;padding:12px 10px 0;border-top:1px solid var(--line-soft);font-size:13px;color:var(--steel)}
+  .tab,.cartbar,.topbar .co{display:none}
+  .main{padding:24px 28px 60px}
+  .two{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+  .side{display:grid;gap:14px;position:sticky;top:16px}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .scrim{align-items:center}
+  .sheet{border-radius:14px}
+  .toast{bottom:32px}
+  .var{grid-template-columns:minmax(0,1fr) 110px auto}
+  .track span{font-size:11.5px}
+  .track span i{margin-bottom:6px}
+  .tr-cap{display:none}
+}
+@media (prefers-reduced-motion:no-preference){ .toast{animation:up .18s ease-out} @keyframes up{from{opacity:.4;translate:0 6px}to{opacity:1;translate:0 0}} }
+
+/* admin additions: laptop first; on a phone the rail becomes a scrolling strip */
+.main{padding-bottom:60px}
+.anav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-block:8px;padding-left:var(--gx);padding-right:var(--gxr);background:var(--paper);border-bottom:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{display:grid;gap:2px;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper);cursor:pointer}
+.stat:hover{border-color:var(--steel)}
+.stat b{font-family:var(--f-mono);font-size:28px;font-weight:500;line-height:1.1}
+.stat.hot b{color:var(--magenta)}
+.t{width:100%;border-collapse:collapse;font-size:14px}
+.t th{text-align:left;color:var(--steel);font-weight:600;font-size:13px;padding:10px 12px;white-space:nowrap}
+.t td{padding:8px 12px;border-top:1px solid var(--line-soft);vertical-align:middle}
+.t tr.click{cursor:pointer}
+.t tr.click:hover td{background:var(--foam)}
+.t .r{text-align:right}
+.t .inp{min-height:36px;padding:4px 8px}
+.t input.inp{width:96px;text-align:right;font-family:var(--f-mono)}
+.t tr.dirty td:first-child{box-shadow:inset 3px 0 0 var(--magenta)}
+.note{padding:10px 12px;border-radius:8px;font-size:14px}
+.note.ok{background:var(--ok-bg)} .note.ok b{color:var(--ok)}
+.note.warn{background:var(--warn-bg)} .note.warn b{color:var(--warn)}
+.docbox{border:1px dashed var(--line);border-radius:8px;padding:28px 12px;text-align:center;color:var(--steel);background:var(--foam)}
+.mail{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--foam);font-size:14px}
+@media (min-width:900px){ .anav{display:none} }
+</style>
+
+<div class="proto"><div class="in">
+  <span>Прототип админки · данные условные · письма не отправляются</span>
+  <a href="/b2b-prototype/" style="color:inherit">Кабинет покупателя ↗</a>
+</div></div>
+<div id="app"></div>
+
+<script>
+const CAT = [{"sku": "CP-ION-BC-50", "cat": "Coatings", "line": "ION", "name": "ION Base Coat", "pack": "50 ml", "price": 95.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-ION-TC-50", "cat": "Coatings", "line": "ION", "name": "ION Top Coat", "pack": "50 ml", "price": 85.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-LUX-50", "cat": "Coatings", "line": "LUX", "name": "LUX", "pack": "50 ml", "price": 70.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-LUXSIM-50", "cat": "Coatings", "line": "LUX", "name": "LUX SIM", "pack": "50 ml", "price": 25.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-9H-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro 9H", "pack": "50 ml", "price": 60.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-TOP-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Top Coat", "pack": "50 ml", "price": 55.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-GLASS-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Glass", "pack": "50 ml", "price": 38.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-LEATHER-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Leather", "pack": "50 ml", "price": 40.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-PLASTIC-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Plastic", "pack": "50 ml", "price": 36.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-WHEEL-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Wheel & Caliper", "pack": "50 ml", "price": 45.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-PPFV-BC-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro PPF & Vinyl Base Coat", "pack": "50 ml", "price": 52.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-PPFV-TC-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro PPF & Vinyl Top Coat", "pack": "50 ml", "price": 48.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-PRIMER-50", "cat": "Coatings", "line": "Original", "name": "Ceramic Pro Nano Primer", "pack": "50 ml", "price": 22.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-CARE-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Care", "pack": "300 ml", "price": 14.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-CAREP-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Care+", "pack": "300 ml", "price": 22.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-SPORT-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Sport", "pack": "300 ml", "price": 18.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-TAG-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro TAG", "pack": "300 ml", "price": 24.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-TEXTILE-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Textile", "pack": "300 ml", "price": 19.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-CLEANER-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Cleaner", "pack": "300 ml", "price": 9.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-IRONX-300", "cat": "Sprayers", "line": "Sprayers", "name": "Ceramic Pro Iron X", "pack": "300 ml", "price": 12.0, "cq": 6, "mode": "cart", "note": ""}, {"sku": "CP-MARINE-50", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Marine", "pack": "50 ml", "price": 58.0, "cq": 1, "mode": "cart", "note": "below waterline"}, {"sku": "CP-MARINE-500", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Marine", "pack": "500 ml", "price": 490.0, "cq": 1, "mode": "cart", "note": "below waterline"}, {"sku": "CP-MARINE-1000", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Marine", "pack": "1000 ml", "price": 890.0, "cq": 1, "mode": "cart", "note": "below waterline"}, {"sku": "CP-BRAVO-50", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Bravo", "pack": "50 ml", "price": 62.0, "cq": 1, "mode": "cart", "note": "above waterline"}, {"sku": "CP-BRAVO-250", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Bravo", "pack": "250 ml", "price": 270.0, "cq": 1, "mode": "cart", "note": "above waterline"}, {"sku": "CP-SQUALL-50", "cat": "Maritime", "line": "Marine", "name": "Ceramic Pro Squall", "pack": "50 ml", "price": 40.0, "cq": 1, "mode": "cart", "note": "marine glass"}, {"sku": "CP-STRONG-50", "cat": "Heavy Duty", "line": "Strong", "name": "Ceramic Pro Strong", "pack": "50 ml", "price": 55.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "CP-STRONG-1000", "cat": "Heavy Duty", "line": "Strong", "name": "Ceramic Pro Strong", "pack": "1000 ml", "price": 920.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "SP-BSH-500", "cat": "Maintenance", "line": "Spectrum", "name": "Basic Shampoo", "pack": "500 ml", "price": 6.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-BSH-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Basic Shampoo", "pack": "5 L", "price": 42.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-ASH-500", "cat": "Maintenance", "line": "Spectrum", "name": "Acidic Shampoo", "pack": "500 ml", "price": 7.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-ASH-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Acidic Shampoo", "pack": "5 L", "price": 49.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-PWF-500", "cat": "Maintenance", "line": "Spectrum", "name": "Pre-Wash Foam", "pack": "500 ml", "price": 6.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-PWF-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Pre-Wash Foam", "pack": "5 L", "price": 45.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-INS-500", "cat": "Maintenance", "line": "Spectrum", "name": "Insect Remover", "pack": "500 ml", "price": 7.2, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-INS-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Insect Remover", "pack": "5 L", "price": 47.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-WTC-500", "cat": "Maintenance", "line": "Spectrum", "name": "Wheel & Tire Cleaner", "pack": "500 ml", "price": 7.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-WTC-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Wheel & Tire Cleaner", "pack": "5 L", "price": 52.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-TFR-500", "cat": "Maintenance", "line": "Spectrum", "name": "Traffic Film Remover", "pack": "500 ml", "price": 6.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-TFR-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Traffic Film Remover", "pack": "5 L", "price": 44.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-IRN-500", "cat": "Maintenance", "line": "Spectrum", "name": "Iron Remover", "pack": "500 ml", "price": 9.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-IRN-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Iron Remover", "pack": "5 L", "price": 72.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-TAR-500", "cat": "Maintenance", "line": "Spectrum", "name": "Tar and Glue Remover", "pack": "500 ml", "price": 9.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-TAR-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Tar and Glue Remover", "pack": "5 L", "price": 68.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-GLS-500", "cat": "Maintenance", "line": "Spectrum", "name": "Glass Cleaner", "pack": "500 ml", "price": 5.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-GLS-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Glass Cleaner", "pack": "5 L", "price": 36.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-APC-500", "cat": "Maintenance", "line": "Spectrum", "name": "All Purpose Cleaner", "pack": "500 ml", "price": 6.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-APC-5000", "cat": "Maintenance", "line": "Spectrum", "name": "All Purpose Cleaner", "pack": "5 L", "price": 41.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-QDT-500", "cat": "Maintenance", "line": "Spectrum", "name": "Quick Detailer", "pack": "500 ml", "price": 9.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-QDT-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Quick Detailer", "pack": "5 L", "price": 69.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-TPW-500", "cat": "Maintenance", "line": "Spectrum", "name": "Textile Pre-Wash", "pack": "500 ml", "price": 6.9, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-TPW-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Textile Pre-Wash", "pack": "5 L", "price": 45.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-BTR-500", "cat": "Maintenance", "line": "Spectrum", "name": "Black Tire", "pack": "500 ml", "price": 8.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-BTR-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Black Tire", "pack": "5 L", "price": 58.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-NRC-500", "cat": "Maintenance", "line": "Spectrum", "name": "No Rinse Cleaner", "pack": "500 ml", "price": 9.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-NRC-5000", "cat": "Maintenance", "line": "Spectrum", "name": "No Rinse Cleaner", "pack": "5 L", "price": 66.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "SP-IQC-500", "cat": "Maintenance", "line": "Spectrum", "name": "Interior Quick Cleaner", "pack": "500 ml", "price": 7.5, "cq": 12, "mode": "cart", "note": ""}, {"sku": "SP-IQC-5000", "cat": "Maintenance", "line": "Spectrum", "name": "Interior Quick Cleaner", "pack": "5 L", "price": 49.0, "cq": 4, "mode": "cart", "note": ""}, {"sku": "UF-LITE-152", "cat": "Films", "line": "Urban", "name": "Urban Lite PPF 165 µm", "pack": "1.52 × 15 m", "price": 690.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-URB-152", "cat": "Films", "line": "Urban", "name": "Urban PPF 185 µm", "pack": "1.52 × 15 m", "price": 890.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-URB-183", "cat": "Films", "line": "Urban", "name": "Urban PPF 185 µm", "pack": "1.83 × 15 m", "price": 1090.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-URBX-152", "cat": "Films", "line": "Urban", "name": "Urban X PPF 210 µm", "pack": "1.52 × 15 m", "price": 1150.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-MATTE-152", "cat": "Films", "line": "Urban", "name": "Urban Matte PPF 185 µm", "pack": "1.52 × 15 m", "price": 990.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-MATTE-183", "cat": "Films", "line": "Urban", "name": "Urban Matte PPF 185 µm", "pack": "1.83 × 15 m", "price": 1190.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-SUN-152", "cat": "Films", "line": "Urban", "name": "Urban SunView IR 185 µm", "pack": "1.52 × 15 m", "price": 1250.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "UF-CPPPF-152", "cat": "Films", "line": "Urban", "name": "Ceramic Pro PPF 185 µm", "pack": "1.52 × 15 m", "price": 1290.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "SH-COLOR-152", "cat": "Films", "line": "Shift", "name": "Ceramic Pro SHIFT colour PPF 185 µm", "pack": "1.52 × 18 m", "price": 1490.0, "cq": 1, "mode": "cart", "note": "colour chosen from 120+ swatch list"}, {"sku": "KV-ION-152", "cat": "Films", "line": "Kavaca", "name": "Kavaca ION PPF (incl. 30 ml ION Top Coat)", "pack": "1.52 × 15 m", "price": 1690.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "KV-IRP-80", "cat": "Films", "line": "Kavaca", "name": "Kavaca IR+ window film VLT 80", "pack": "1.52 × 30 m", "price": 620.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "KV-IR-VLT", "cat": "Films", "line": "Kavaca", "name": "Kavaca IR window film", "pack": "1.52 × 30 m", "price": 540.0, "cq": 1, "mode": "cart", "note": "VLT shade chosen from 6 options (list to confirm with HQ)"}, {"sku": "SV-TRAINING", "cat": "Services", "line": "Training", "name": "Factory onsite training", "pack": "per programme", "price": 0.0, "cq": 1, "mode": "request", "note": "price on request"}, {"sku": "SV-SMARTCUT", "cat": "Services", "line": "Software", "name": "Kavaca Smart Cut", "pack": "subscription", "price": 0.0, "cq": 1, "mode": "external", "note": "link only: subscription is bought from the vendor"}, {"sku": "PR-DPK3", "cat": "Promo", "line": "Demo", "name": "Demo Panel Kit 3.0", "pack": "1 kit", "price": 180.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-HDM", "cat": "Promo", "line": "Demo", "name": "Hydrophobic Display Machine (mini hood included)", "pack": "1 pc", "price": 390.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-BONNET", "cat": "Promo", "line": "Demo", "name": "Mini Car Bonnet", "pack": "1 pc", "price": 45.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-ALU", "cat": "Promo", "line": "Demo", "name": "Aluminum Panel 30 × 20 cm", "pack": "1 pc", "price": 9.0, "cq": 5, "mode": "cart", "note": ""}, {"sku": "PR-GLASS3", "cat": "Promo", "line": "Demo", "name": "Glass Demo Panel with CP Strong", "pack": "3 panels", "price": 35.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-CHIP", "cat": "Promo", "line": "Demo", "name": "Paint Chipping Machine", "pack": "1 pc", "price": 320.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-WOW", "cat": "Promo", "line": "Demo", "name": "WOW Box", "pack": "1 pc", "price": 95.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-SATA", "cat": "Promo", "line": "Tools", "name": "SATA/IWATA Adaptor", "pack": "1 pc", "price": 18.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-LED23", "cat": "Promo", "line": "Signage", "name": "LED Logo Sign 2.3 m", "pack": "1 pc", "price": 480.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-KLED-D", "cat": "Promo", "line": "Signage", "name": "Kavaca LED Sign (dark)", "pack": "1 pc", "price": 240.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-KLED-L", "cat": "Promo", "line": "Signage", "name": "Kavaca LED Sign (light)", "pack": "1 pc", "price": 240.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-BADGE", "cat": "Promo", "line": "Merch", "name": "Kavaca Stainless Steel Badge", "pack": "1 pc", "price": 6.0, "cq": 10, "mode": "cart", "note": ""}, {"sku": "PR-WSLOGO", "cat": "Promo", "line": "Merch", "name": "Square Windshield Logo 4 × 3.5 cm", "pack": "10 pcs", "price": 8.0, "cq": 1, "mode": "cart", "note": ""}, {"sku": "PR-POLO-B", "cat": "Promo", "line": "Apparel", "name": "Black Polo", "pack": "1 pc", "price": 22.0, "cq": 1, "mode": "cart", "note": "size"}, {"sku": "PR-POLO-W", "cat": "Promo", "line": "Apparel", "name": "White Polo", "pack": "1 pc", "price": 22.0, "cq": 1, "mode": "cart", "note": "size"}, {"sku": "PR-KLS", "cat": "Promo", "line": "Apparel", "name": "Kavaca Longsleeve Tee", "pack": "1 pc", "price": 26.0, "cq": 1, "mode": "cart", "note": "size"}, {"sku": "PR-JACKET", "cat": "Promo", "line": "Apparel", "name": "CP Kavaca Long Sleeve Jacket", "pack": "1 pc", "price": 65.0, "cq": 1, "mode": "cart", "note": "size L–XL"}, {"sku": "PR-NOTE", "cat": "Promo", "line": "Merch", "name": "Notebook", "pack": "1 pc", "price": 5.0, "cq": 10, "mode": "cart", "note": ""}, {"sku": "PR-LANYARD", "cat": "Promo", "line": "Merch", "name": "Lanyard String", "pack": "1 pc", "price": 2.0, "cq": 10, "mode": "cart", "note": ""}, {"sku": "PR-BAG", "cat": "Promo", "line": "Merch", "name": "Paper Bag", "pack": "1 pc", "price": 1.5, "cq": 25, "mode": "cart", "note": ""}];
+const P = Object.fromEntries(CAT.map((p,i)=>(p.i=i,p.dealer=Math.round(p.price*90)/100,p.stock=i===33?'none':(i%17===5?'order':'in'),p.shown=true,[p.sku,p])));
+const CATS = {Coatings:'Покрытия',Sprayers:'Спреи',Maritime:'Морская',"Heavy Duty":'Промышленная',Maintenance:'Уход',Films:'Плёнки',Promo:'Промо',Services:'Услуги'};
+const VAT=0.21, BUYER='/b2b-prototype/';
+const GROUPS=['Студия','Дилер','Дилер с территорией'], PAY=['Предоплата по проформе','Отсрочка 14 дней','Отсрочка 30 дней'], MGR=['Андрей','Второй менеджер'];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}).replace(/[  ]/g,' ')+' €';
+const plural=(n,a,b,c)=>{const m=n%100,k=n%10;return (m>10&&m<20)?c:k===1?a:(k>1&&k<5)?b:c};
+const NOW='11 ноября, сейчас';
+
+const STAT={sent:['На подтверждение','amber'],changed:['Ждём ответа клиента','grey'],awaiting:['Ожидает оплаты','amber'],paid:['Оплачен, собрать','blue'],packed:['Собран, отгрузить','blue'],shipped:['Отгружен','green'],delivered:['Доставлен','green'],cancelled:['Отменён','red']};
+const CUST=[
+ {id:'c1',name:'Studio Marko d.o.o.',country:'Черногория',city:'Tivat',tax:'PIB 02345678',addr:'Jadranski put bb, 85320 Tivat',group:'Студия',pay:PAY[0],limit:0,status:'active',mgr:MGR[0],last:'9 ноября',
+  staff:[['Marko Marković','marko@studio.me','Владелец'],['Jelena Petrović','jelena@studio.me','Закупщик'],['Ana Kovač','racuni@studio.me','Бухгалтер']],notes:[['2 октября','Берёт морскую линейку под сезон, просил напомнить в феврале.']]},
+ {id:'c2',name:'Adria Yacht Care d.o.o.',country:'Черногория',city:'Kotor',tax:'PIB 03112233',addr:'Dobrota 41, 85330 Kotor',group:'Дилер',pay:PAY[1],limit:5000,status:'active',mgr:MGR[0],last:'6 ноября',
+  staff:[['Nikola Vuković','nikola@adriayachtcare.example','Владелец']],notes:[]},
+ {id:'c3',name:'Detailing Lab Beograd d.o.o.',country:'Сербия',city:'Beograd',tax:'PIB 108765432',addr:'Bulevar oslobođenja 12, 11000 Beograd',group:'Студия',pay:PAY[0],limit:0,status:'active',mgr:MGR[1],last:'сегодня',
+  staff:[['Stefan Ilić','stefan@detailinglab.example','Владелец'],['Milica Jović','milica@detailinglab.example','Закупщик']],notes:[]},
+ {id:'c4',name:'Marina Servis Split d.o.o.',country:'Хорватия',city:'Split',tax:'OIB 12345678901',addr:'Obala kneza Domagoja 5, 21000 Split',group:'Дилер с территорией',pay:PAY[2],limit:12000,status:'active',mgr:MGR[0],last:'4 ноября',
+  staff:[['Ivana Babić','ivana@marinaservis.example','Закупщик']],notes:[]},
+ {id:'c5',name:'Auto Sjaj Nikšić d.o.o.',country:'Черногория',city:'Nikšić',tax:'PIB 02998877',addr:'Njegoševa 3, 81400 Nikšić',group:'Студия',pay:PAY[0],limit:0,status:'blocked',why:'Счёт просрочен больше 60 дней',mgr:MGR[0],last:'12 июля',staff:[['Petar Radović','petar@autosjaj.example','Владелец']],notes:[]}
+];
+const C=id=>CUST.find(c=>c.id===id);
+const ORD=[
+ {no:'CPB-2026-0143',c:'c3',date:'сегодня, 10:42',status:'sent',by:'Stefan I.',items:[['CP-9H-50',12],['CP-TOP-50',12],['CP-BRAVO-250',2],['SP-BSH-5000',4],['UF-URB-152',1]],docs:[],log:[['сегодня, 10:42','Клиент отправил заказ']]},
+ {no:'CPB-2026-0142',c:'c1',date:'9 ноября',status:'changed',by:'Marko M.',items:[['CP-9H-50',6],['CP-TOP-50',6],['CP-MARINE-500',2],['CP-BRAVO-250',1],['SP-BSH-5000',2]],docs:[],log:[['9 ноября, 16:05','Состав изменён: Bravo 250 ml 2 → 1. Причина: в наличии 1 шт.'],['9 ноября, 11:30','Клиент отправил заказ']]},
+ {no:'CPB-2026-0141',c:'c2',date:'6 ноября',status:'paid',by:'Nikola V.',items:[['CP-MARINE-1000',2],['CP-BRAVO-250',4],['CP-SQUALL-50',4]],docs:[['Проформа','0141'],['Счёт','0141']],log:[['10 ноября, 09:15','Оплата получена'],['7 ноября, 10:00','Подтверждён, выставлена проформа'],['6 ноября, 17:20','Клиент отправил заказ']]},
+ {no:'CPB-2026-0140',c:'c4',date:'4 ноября',status:'packed',by:'Ivana B.',req:'Просим добавить 2 рулона Urban PPF 1.52, если ещё не отгрузили.',items:[['UF-URB-152',2],['UF-MATTE-152',1],['KV-ION-152',1],['CP-PPFV-TC-50',6]],docs:[['Проформа','0140'],['Счёт','0140']],log:[['11 ноября, 08:50','Клиент запросил изменение заказа'],['8 ноября, 14:30','Собран'],['5 ноября, 11:00','Подтверждён, отсрочка 30 дней']]},
+ {no:'CPB-2026-0139',c:'c1',date:'7 ноября',status:'shipped',by:'Marko M.',track:'1Z999AA10123456784',items:[['CP-ION-BC-50',2],['CP-ION-TC-50',2],['CP-GLASS-50',4],['CP-CARE-300',12]],docs:[['Проформа','0139'],['Счёт','0139'],['Накладная','0139']],log:[['11 ноября, 10:12','Отгружен'],['9 ноября, 16:40','Оплата получена']]},
+ {no:'CPB-2026-0131',c:'c1',date:'28 октября',status:'awaiting',due:'18 ноября',by:'Marko M.',items:[['CP-9H-50',6],['CP-TOP-50',6],['CP-CARE-300',12],['SP-IRN-500',12]],docs:[['Проформа','0131']],log:[['29 октября, 10:20','Подтверждён, выставлена проформа']]},
+ {no:'CPB-2026-0127',c:'c2',date:'20 октября',status:'awaiting',due:'5 ноября',overdue:true,by:'Nikola V.',items:[['CP-MARINE-500',4],['CP-CLEANER-300',12]],docs:[['Проформа','0127'],['Счёт','0127']],log:[['6 ноября, 09:00','Клиенту ушло напоминание о просрочке'],['21 октября, 12:00','Подтверждён, отсрочка 14 дней']]},
+ {no:'CPB-2026-0118',c:'c1',date:'2 октября',status:'delivered',by:'Jelena P.',items:[['CP-MARINE-1000',1],['CP-BRAVO-250',2]],docs:[['Проформа','0118'],['Счёт','0118'],['Накладная','0118']],log:[['7 октября, 14:02','Доставлен']]}
+];
+const APPS=[
+ {id:'a1',status:'new',date:'сегодня, 09:14',company:'Nautika Servis d.o.o.',country:'Черногория',taxL:'PIB',tax:'03456789',vat:'Да',regno:'50987654',addr:'Šuranj bb, 85330 Kotor',site:'nautikaservis.example',name:'Luka Perović',role:'Директор',email:'luka@nautikaservis.example',phone:'+382 67 123 456',wa:true,type:'Обслуживание яхт, марина',want:'Морская линейка, уход и мойка',vol:'2 000–5 000 €',doc:'izvod-crps.pdf',check:{ok:false,text:'Автоматической проверки для Черногории нет. Сверьте PIB и название в реестре.',link:['Реестр CRPS','https://www.crps.me']}},
+ {id:'a2',status:'new',date:'вчера, 18:30',company:'Car Care Ljubljana d.o.o.',country:'Словения',taxL:'VAT ID',tax:'SI12345678',vat:'Да',regno:'6123456000',addr:'Dunajska cesta 20, 1000 Ljubljana',site:'',name:'Maja Novak',role:'Закупки',email:'maja@carcare-lj.example',phone:'+386 40 123 456',wa:false,type:'Детейлинг-студия',want:'Покрытия для авто, плёнки',vol:'500–2 000 €',doc:'',check:{ok:true,text:'VIES: номер действителен, название и адрес совпадают с заявкой.'}},
+ {id:'a3',status:'new',date:'вчера, 11:02',company:'Sjaj Detailing d.o.o.',country:'Сербия',taxL:'PIB',tax:'109876543',vat:'Да',regno:'21456789',addr:'Cara Dušana 8, 21000 Novi Sad',site:'',name:'Milica Jović',role:'Владелец',email:'milica@detailinglab.example',phone:'+381 63 123 456',wa:true,type:'Детейлинг-студия',want:'Покрытия для авто',vol:'до 500 €',doc:'apr-izvod.pdf',dup:'Почта с тем же доменом, что у клиента Detailing Lab Beograd d.o.o. Возможно, вторая заявка от той же компании.',check:{ok:false,text:'Контрольная цифра PIB сходится. Название сверьте в реестре.',link:['Реестр APR','https://www.apr.gov.rs']}},
+ {id:'a4',status:'clarify',date:'7 ноября',company:'Boka Marine d.o.o.',country:'Черногория',taxL:'PIB',tax:'03221144',vat:'Нет',regno:'50112233',addr:'Obala bb, 85340 Herceg Novi',site:'',name:'Ivan Kostić',role:'Владелец',email:'ivan@bokamarine.example',phone:'+382 68 222 333',wa:true,type:'Верфь',want:'Морская линейка',vol:'',doc:'',asked:'Документ о регистрации компании',check:{ok:false,text:'Сверьте PIB и название в реестре.',link:['Реестр CRPS','https://www.crps.me']}},
+ {id:'a5',status:'rejected',date:'3 ноября',company:'Частное лицо',country:'Черногория',taxL:'PIB',tax:'—',vat:'Нет',regno:'—',addr:'Budva',site:'',name:'Dejan M.',role:'',email:'dejan@mail.example',phone:'+382 69 555 444',wa:true,type:'Другое',want:'Покрытия для авто',vol:'',doc:'',reason:'Кабинет открыт только компаниям',check:{ok:false,text:'Налоговый номер не указан.'}}
+];
+const DOCS=[['Паспорт безопасности','Ceramic Pro 9H','EN','версия 4','12.02.2026',''],['Паспорт безопасности','Ceramic Pro Marine','EN','версия 5','03.03.2026',''],['Паспорт безопасности','Ceramic Pro Bravo','EN','версия 2','03.03.2026',''],['Сертификат Bureau Veritas','Ceramic Pro Marine','EN','48947/B0 BV','','18.03.2027'],['Условия гарантии','Все покрытия','EN, CG, SR','2026','01.01.2026','31.12.2026'],['Техническое описание','Ceramic Pro ION','EN','версия 2','20.01.2026',''],['Инструкция по нанесению','Ceramic Pro Marine','EN','версия 3','03.03.2026','']];
+const FEED=[['сегодня, 10:42','Новый заказ CPB-2026-0143 · Detailing Lab Beograd','order1','CPB-2026-0143'],['сегодня, 09:14','Новая заявка · Nautika Servis d.o.o.','app1','a1'],['сегодня, 08:50','Запрос изменения по заказу CPB-2026-0140 · Marina Servis Split','order1','CPB-2026-0140'],['вчера, 18:30','Новая заявка · Car Care Ljubljana d.o.o.','app1','a2'],['10 ноября, 09:15','Оплата по заказу CPB-2026-0141 · Adria Yacht Care','order1','CPB-2026-0141']];
+const S={view:'dash',arg:null,appTab:'new',ordTab:'todo',pq:'',pcat:'all',dirty:new Set(),sheet:null,seq:144};
+let pending=null,toastT;
+
+const qty=(o,k,q)=>o.edit&&k in o.edit?o.edit[k]:q;
+const sum=o=>o.items.reduce((s,[k,q])=>s+P[k].price*qty(o,k,q),0);
+const pill=o=>`<span class="pill ${o.overdue?'red':STAT[o.status][1]}">${o.overdue?'Просрочен':STAT[o.status][0]}</span>${o.req?' <span class="pill amber">запрос клиента</span>':''}`;
+const APST={new:['Новая','amber'],clarify:['Ждём уточнения','grey'],approved:['Одобрена','green'],rejected:['Отклонена','red']};
+const sel=(id,list,cur)=>`<select class="inp" id="${id}">${list.map(x=>`<option ${x===cur?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
+const cnt={apps:()=>APPS.filter(a=>a.status==='new').length,confirm:()=>ORD.filter(o=>o.status==='sent').length,ship:()=>ORD.filter(o=>['paid','packed'].includes(o.status)).length,over:()=>ORD.filter(o=>o.overdue).length,req:()=>ORD.filter(o=>o.req).length};
+
+/* ---------- shell ---------- */
+const NAV=[['dash','Сводка'],['apps','Заявки'],['custs','Клиенты'],['orders','Заказы'],['products','Товары и цены'],['docs','Документы']];
+const navCur=()=>({app1:'apps',cust1:'custs',order1:'orders'}[S.view]||S.view);
+const badge=k=>{const n=k==='apps'?cnt.apps():k==='orders'?cnt.confirm()+cnt.req():0;return n?`<span class="cnt">${n}</span>`:''};
+function shell(inner){const cur=navCur();
+  return `<nav class="anav" aria-label="Разделы">${NAV.map(([k,t])=>`<button class="chip ${cur===k?'on':''}" data-a="go" data-v="${k}">${t}${badge(k)?' · '+(k==='apps'?cnt.apps():cnt.confirm()+cnt.req()):''}</button>`).join('')}</nav>
+  <div class="app"><nav class="rail" aria-label="Разделы"><span class="brand">CERAMIC <b>PRO</b> BALKANS</span><span class="who">Администратор · Андрей</span>
+   ${NAV.map(([k,t])=>`<button class="nv ${cur===k?'on':''}" data-a="go" data-v="${k}">${t}${badge(k)}</button>`).join('')}
+   <div class="mgr">Вход в админку отдельный, со вторым фактором.</div></nav><main class="main">${inner}</main></div>`}
+const head=(t,right='',back)=>`<div class="topbar" style="flex-wrap:wrap"><div>${back?`<button class="btn txt sm" style="padding:0" data-a="go" data-v="${back[0]}">← ${back[1]}</button>`:''}<h1>${t}</h1></div><div class="row">${right}</div></div>`;
+
+/* ---------- views ---------- */
+function vDash(){return shell(head('Сводка')+`
+  <div class="stats">${[['Новые заявки',cnt.apps(),'apps','new'],['Заказы на подтверждение',cnt.confirm(),'orders','todo'],['Собрать и отгрузить',cnt.ship(),'orders','ship'],['Просроченные счета',cnt.over(),'orders','pay'],['Запросы клиентов по заказам',cnt.req(),'orders','todo']].map(([t,n,v,tab])=>`<button class="stat ${n?'hot':''}" data-a="stat" data-v="${v}" data-tab="${tab}"><b>${n}</b><span>${t}</span></button>`).join('')}</div>
+  <div class="panel"><div class="hd"><h2>Последние события</h2></div>${FEED.map(f=>`<button class="li click" data-a="go" data-v="${f[2]}" data-arg="${f[3]}"><span class="muted small" style="flex:none;width:118px">${f[0]}</span><span class="g">${esc(f[1])}</span><span class="muted">→</span></button>`).join('')}</div>`)}
+function vApps(){const list=APPS.filter(a=>a.status===S.appTab);
+  return shell(head('Заявки')+`<div class="tabs">${Object.entries(APST).map(([k,[t]])=>`<button class="${S.appTab===k?'on':''}" data-a="atab" data-v="${k}">${k==='new'?'Новые':k==='clarify'?'Ждут уточнения':k==='approved'?'Одобренные':'Отклонённые'} ${APPS.filter(a=>a.status===k).length}</button>`).join('')}</div>
+  <div class="panel">${list.length?list.map(a=>`<button class="li click" data-a="go" data-v="app1" data-arg="${a.id}"><span class="g"><b>${esc(a.company)}</b> ${a.dup?'<span class="pill amber">возможен дубль</span>':''}${a.check.ok?' <span class="pill green">VIES: в порядке</span>':''}<br><span class="muted small">${esc(a.country)} · ${esc(a.type)} · ${a.date}${a.doc?'':' · без документа'}</span></span><span class="muted">→</span></button>`).join(''):`<div class="bd muted">В этой вкладке заявок нет.</div>`}</div>`)}
+function vApp1(){const a=APPS.find(x=>x.id===S.arg)||APPS[0], st=APST[a.status];
+  return shell(head(esc(a.company),`<span class="pill ${st[1]}">${st[0]}</span>`,['apps','Все заявки'])+`<div class="two"><div class="stack">
+   ${a.dup?`<div class="note warn"><b>Возможен дубль.</b> ${esc(a.dup)}</div>`:''}
+   <div class="panel"><div class="hd"><h2>Компания</h2><span class="muted small">${a.date}</span></div><div class="bd stack">
+    <dl class="kv"><dt>Страна</dt><dd>${esc(a.country)}</dd><dt>${a.taxL}</dt><dd class="mono">${esc(a.tax)}</dd><dt>Плательщик НДС</dt><dd>${a.vat}</dd><dt>Рег. номер</dt><dd class="mono">${esc(a.regno)}</dd><dt>Адрес</dt><dd>${esc(a.addr)}</dd><dt>Сайт</dt><dd>${a.site?esc(a.site):'<span class="muted">не указан</span>'}</dd></dl>
+    <div class="note ${a.check.ok?'ok':'warn'}"><b>${a.check.ok?'Проверено автоматически.':'Проверьте вручную.'}</b> ${esc(a.check.text)} ${a.check.link?`<a href="${a.check.link[1]}" target="_blank" rel="noopener">${a.check.link[0]} ↗</a>`:''}</div></div></div>
+   <div class="panel"><div class="hd"><h2>Документ о регистрации</h2></div><div class="bd">${a.doc?`<div class="docbox"><span class="mono">${esc(a.doc)}</span><br>Здесь документ открывается прямо в карточке</div>`:`<p class="muted">Клиент не приложил документ. Можно одобрить без него или запросить.</p>`}</div></div>
+   <div class="panel"><div class="hd"><h2>Чем занимается</h2></div><div class="bd"><dl class="kv"><dt>Тип</dt><dd>${esc(a.type)}</dd><dt>Интересует</dt><dd>${esc(a.want)}</dd><dt>Объём в месяц</dt><dd>${a.vol?esc(a.vol):'<span class="muted">не указан</span>'}</dd></dl></div></div>
+  </div><div class="stack">
+   <div class="panel"><div class="hd"><h2>Контакт</h2></div><div class="bd stack s8"><p><b>${esc(a.name)}</b>${a.role?' · '+esc(a.role):''}</p><p class="mono small">${esc(a.email)}</p><p class="mono small">${esc(a.phone)}${a.wa?' · WhatsApp':''}</p><div class="row"><button class="btn sm" data-a="copy" data-v="${esc(a.phone)}">Скопировать телефон</button><button class="btn sm" data-a="copy" data-v="${esc(a.email)}">Скопировать почту</button></div></div></div>
+   <div class="panel"><div class="hd"><h2>Решение</h2></div><div class="bd stack">${
+    a.status==='new'||a.status==='clarify'?`${a.status==='clarify'?`<p class="small muted">Запрошено у клиента: ${esc(a.asked)}</p>`:''}
+     <div class="fld"><label for="ap-group">Ценовая группа</label>${sel('ap-group',GROUPS,GROUPS[0])}</div>
+     <div class="fld"><label for="ap-pay">Условия оплаты</label>${sel('ap-pay',PAY,PAY[0])}</div>
+     <div class="fld"><label for="ap-limit">Лимит отсрочки, € <i>если есть отсрочка</i></label><input class="inp" id="ap-limit" inputmode="numeric" value="0"></div>
+     <div class="fld"><label for="ap-mgr">Менеджер</label>${sel('ap-mgr',MGR,MGR[0])}</div>
+     <button class="btn pri block" data-a="approve" data-v="${a.id}">Одобрить</button>
+     <div class="row"><button class="btn" data-a="clarify" data-v="${a.id}">Запросить уточнение</button><button class="btn" data-a="reject" data-v="${a.id}">Отклонить</button></div>`
+    :a.status==='approved'?`<p>Заявка одобрена. Клиенту ушло письмо «Доступ открыт».</p><div><button class="btn" data-a="go" data-v="cust1" data-arg="${a.cust}">Открыть карточку клиента</button></div>`
+    :`<p>Заявка отклонена. Причина: ${esc(a.reason)}.</p>`}</div></div>
+  </div></div>`)}
+function vCusts(){return shell(head('Клиенты')+`<div class="panel tblw"><table class="t"><thead><tr><th>Компания</th><th>Страна</th><th>Группа</th><th>Оплата</th><th>Статус</th><th class="r">Заказы за 12 мес</th><th>Последний заказ</th></tr></thead><tbody>
+  ${CUST.map(c=>{const s=ORD.filter(o=>o.c===c.id).reduce((x,o)=>x+sum(o),0);return `<tr class="click" data-a="go" data-v="cust1" data-arg="${c.id}"><td><b>${esc(c.name)}</b><br><span class="muted small">${esc(c.city)}</span></td><td>${c.country}</td><td>${c.group}</td><td>${c.pay}</td><td><span class="pill ${c.status==='active'?'green':'red'}">${c.status==='active'?'Активен':'Заблокирован'}</span></td><td class="r num">${fmt(s)}</td><td>${c.last}</td></tr>`}).join('')}</tbody></table></div>`)}
+function vCust1(){const c=C(S.arg)||CUST[0], os=ORD.filter(o=>o.c===c.id), used=os.filter(o=>o.status==='awaiting'&&c.limit).reduce((s,o)=>s+sum(o)*(1+VAT),0);
+  return shell(head(esc(c.name),`<span class="pill ${c.status==='active'?'green':'red'}">${c.status==='active'?'Активен':'Заблокирован'}</span>`,['custs','Все клиенты'])+`
+  ${c.status==='blocked'?`<div class="note warn"><b>Доступ заблокирован.</b> ${esc(c.why)}</div>`:''}
+  <div class="two"><div class="stack">
+   <div class="panel"><div class="hd"><h2>Реквизиты</h2></div><div class="bd"><dl class="kv"><dt>Налоговый номер</dt><dd class="mono">${c.tax}</dd><dt>Адрес</dt><dd>${esc(c.addr)}, ${c.country}</dd></dl></div></div>
+   <div class="panel"><div class="hd"><h2>Заказы</h2><span class="muted small">${os.length}</span></div>${os.length?os.map(o=>`<button class="li click" data-a="go" data-v="order1" data-arg="${o.no}"><span class="g"><span class="mono">${o.no}</span> ${pill(o)}<br><span class="muted small">${o.date}</span></span><span class="num">${fmt(sum(o))}</span></button>`).join(''):`<div class="bd muted">Заказов пока нет.</div>`}</div>
+   <div class="panel"><div class="hd"><h2>Сотрудники</h2></div>${c.staff.map(u=>`<div class="li"><div class="g"><b>${u[0]}</b> <span class="pill grey">${u[2]}</span><br><span class="muted small mono">${u[1]}</span></div></div>`).join('')}</div>
+   <div class="panel"><div class="hd"><h2>Внутренние заметки</h2><span class="muted small">клиент их не видит</span></div>${c.notes.map(n=>`<div class="li"><span class="muted small" style="flex:none;width:118px">${n[0]}</span><span class="g">${esc(n[1])}</span></div>`).join('')}
+    <div class="bd stack s8"><textarea class="inp" id="cnote" rows="2" aria-label="Новая заметка" placeholder="Новая заметка"></textarea><div><button class="btn sm" data-a="cnote" data-v="${c.id}">Добавить заметку</button></div></div></div>
+  </div><div class="stack">
+   <div class="panel"><div class="hd"><h2>Условия</h2></div><div class="bd stack">
+    <div class="fld"><label for="c-group">Ценовая группа</label>${sel('c-group',GROUPS,c.group)}</div>
+    <div class="fld"><label for="c-pay">Условия оплаты</label>${sel('c-pay',PAY,c.pay)}</div>
+    <div class="fld"><label for="c-limit">Лимит отсрочки, €</label><input class="inp" id="c-limit" inputmode="numeric" value="${c.limit}">${c.limit?`<span class="h">Использовано <span class="num">${fmt(used)}</span> из <span class="num">${fmt(c.limit)}</span></span>`:''}</div>
+    <div class="fld"><label for="c-mgr">Менеджер</label>${sel('c-mgr',MGR,c.mgr)}</div>
+    <button class="btn" data-a="csave" data-v="${c.id}">Сохранить условия</button></div></div>
+   <a class="btn" href="${BUYER}" target="_blank" rel="noopener">Открыть кабинет как клиент ↗</a>
+   <p class="small muted">Только просмотр: вы видите кабинет глазами клиента. В прототипе открывается общий пример кабинета.</p>
+   <button class="btn" data-a="mkorder" data-v="${c.id}">Создать заказ за клиента</button>
+   ${c.status==='active'?`<button class="btn" data-a="block" data-v="${c.id}">Заблокировать доступ</button>`:`<button class="btn" data-a="unblock" data-v="${c.id}">Вернуть доступ</button>`}
+  </div></div>`)}
+const OTABS={todo:['Требуют действия',o=>o.status==='sent'||o.req],pay:['Ждут оплаты',o=>o.status==='awaiting'],ship:['Собрать и отгрузить',o=>['paid','packed'].includes(o.status)],way:['В пути и ждут клиента',o=>['shipped','changed'].includes(o.status)],all:['Все',()=>true]};
+function vOrders(){const list=ORD.filter(OTABS[S.ordTab][1]);
+  return shell(head('Заказы',`<button class="btn sm" data-a="mkorder" data-v="">Создать заказ за клиента</button>`)+`<div class="tabs">${Object.entries(OTABS).map(([k,[t,f]])=>`<button class="${S.ordTab===k?'on':''}" data-a="otab" data-v="${k}">${t} ${ORD.filter(f).length}</button>`).join('')}</div>
+  <div class="panel">${list.length?list.map(o=>`<button class="li click" data-a="go" data-v="order1" data-arg="${o.no}"><span class="g"><span class="mono">${o.no}</span> ${pill(o)}<br><span class="muted small">${esc(C(o.c).name)} · ${o.date} · ${o.items.length} ${plural(o.items.length,'позиция','позиции','позиций')}${o.due?' · оплатить до '+o.due:''}</span></span><span class="num">${fmt(sum(o))}</span></button>`).join(''):`<div class="bd muted">Здесь пусто: заказов с таким статусом нет.</div>`}</div>`)}
+const NEXT={sent:['Подтвердить заказ','awaiting','Заказ {no} подтверждён','Наличие подтверждено. Проформа во вложении, реквизиты для оплаты в письме и в кабинете.','Проформа'],
+ changed:['Клиент согласился: подтвердить','awaiting','Заказ {no} подтверждён','Проформа во вложении, реквизиты для оплаты в письме и в кабинете.','Проформа'],
+ awaiting:['Отметить оплату','paid','Оплата по заказу {no} получена','Собираем заказ. Счёт доступен в кабинете.','Счёт'],
+ paid:['Отметить: собран','packed'],packed:['Отметить отгрузку','ship'],shipped:['Отметить: доставлен','delivered','Заказ {no} доставлен','Спасибо за заказ. Документы остаются в кабинете.']};
+function vOrder1(){const o=ORD.find(x=>x.no===S.arg)||ORD[0], c=C(o.c), s=sum(o), nx=NEXT[o.status], editable=o.status==='sent', changed=o.edit&&o.items.some(([k,q])=>o.edit[k]!==undefined&&o.edit[k]!==q);
+  return shell(head(`<span class="mono" style="font-family:var(--f-mono);font-size:21px">${o.no}</span>`,pill(o),['orders','Все заказы'])+`<div class="two"><div class="stack">
+   ${o.req?`<div class="note warn stack s8"><p><b>Запрос клиента.</b> ${esc(o.req)}</p><div class="row"><button class="btn sm" data-a="reqdone" data-v="${o.no}">Ответить и закрыть запрос</button></div></div>`:''}
+   ${o.overdue?`<div class="note warn"><b>Счёт просрочен.</b> Срок оплаты был ${o.due}. Клиенту ушло напоминание.</div>`:''}
+   <div class="panel"><div class="hd"><h2>Позиции</h2><span class="muted small">${editable?'количество можно менять до подтверждения':o.items.length}</span></div>
+    ${o.items.map(([k,q])=>{const n=qty(o,k,q);return `<div class="li"><div class="g"><b>${esc(P[k].name)}</b> <span class="muted">${esc(P[k].pack)}</span><br><span class="muted small"><span class="mono">${k}</span> · <span class="num">${fmt(P[k].price)}</span> · склад: ${P[k].stock==='in'?'в наличии':P[k].stock==='order'?'под заказ':'нет'}${n!==q?` · <s>было ${q}</s>`:''}</span></div>${editable?`<div class="st ${n!==q?'has':''}"><button data-a="oq" data-v="${k}" data-d="-1" aria-label="Меньше">−</button><input value="${n}" readonly aria-label="Количество"><button data-a="oq" data-v="${k}" data-d="1" aria-label="Больше">+</button></div>`:`<span class="muted">× ${q}</span>`}<span class="num" style="min-width:92px;text-align:right">${fmt(P[k].price*n)}</span></div>`}).join('')}
+    <div class="bd tot" style="border-top:1px solid var(--line-soft)"><div><span>Сумма без НДС</span><span class="num">${fmt(s)}</span></div><div class="big"><span>Всего с НДС 21%</span><span class="num">${fmt(s*(1+VAT))}</span></div></div>
+    ${changed?`<div class="bd stack s8" style="border-top:1px solid var(--line-soft)"><div class="fld"><label for="why">Причина изменения</label><input class="inp" id="why" value="${esc(o.why||'')}" placeholder="Например: в наличии 1 шт, поставка 24 ноября"><span class="h">Клиент увидит причину рядом с изменённой строкой.</span></div><div class="row"><button class="btn pri" data-a="sendchg" data-v="${o.no}">Отправить изменения клиенту</button><button class="btn" data-a="undo" data-v="${o.no}">Вернуть как было</button></div></div>`:''}</div>
+   <div class="panel"><div class="hd"><h2>Переписка и заметки</h2></div>
+    <div class="bd stack s8"><textarea class="inp" id="msg" rows="2" aria-label="Текст" placeholder="Текст сообщения или заметки"></textarea><div class="row"><button class="btn sm" data-a="msg" data-v="${o.no}">Написать клиенту</button><button class="btn sm" data-a="note" data-v="${o.no}">Сохранить как внутреннюю заметку</button></div></div></div>
+   <div class="panel"><div class="hd"><h2>История</h2></div>${o.log.map(([d,t,k])=>`<div class="li"><span class="muted small" style="flex:none;width:118px">${d}</span><span class="g">${k?`<span class="pill ${k==='int'?'grey':'blue'}">${k==='int'?'внутренняя':'клиенту'}</span> `:''}${esc(t)}</span></div>`).join('')}</div>
+  </div><div class="stack">
+   <div class="panel"><div class="hd"><h2>Следующий шаг</h2></div><div class="bd stack">${
+    changed?`<p class="muted">Сначала отправьте изменения клиенту или верните состав как был.</p>`
+    :nx?`<button class="btn pri block" data-a="next" data-v="${o.no}">${nx[0]}</button>${nx[2]?`<p class="small muted">Клиент получит письмо. Перед отправкой вы увидите текст.</p>`:(o.status==='paid'?`<p class="small muted">Письмо клиенту на этом шаге не уходит.</p>`:'')}${o.status==='changed'?`<p class="small muted">Обычно клиент отвечает сам в кабинете. Кнопка нужна, если он согласился по телефону.</p>`:''}`
+    :`<p class="muted">${o.status==='delivered'?'Заказ завершён.':'Заказ отменён.'}</p>`}
+    ${['sent','changed','awaiting','paid','packed'].includes(o.status)?`<button class="btn block" data-a="ocancel" data-v="${o.no}">Отменить заказ</button>`:''}</div></div>
+   <div class="panel"><div class="hd"><h2>Клиент</h2></div><div class="bd stack s8"><p><b>${esc(c.name)}</b><br><span class="muted small">${c.group} · ${c.pay} · оформил: ${esc(o.by)}</span></p><div><button class="btn sm" data-a="go" data-v="cust1" data-arg="${c.id}">Карточка клиента</button></div></div></div>
+   <div class="panel"><div class="hd"><h2>Документы</h2><span class="muted small">${o.docs.length}</span></div>${o.docs.map(([t,n])=>`<div class="li"><div class="g"><b>${t} ${n}</b><br><span class="muted small">PDF · виден клиенту</span></div></div>`).join('')}
+    <div class="bd stack s8"><div class="docbox" style="padding:16px 12px">Перетащите файл сюда</div><div class="row">${['Проформа','Счёт','Накладная'].map(t=>`<button class="btn sm" data-a="adddoc" data-v="${o.no}" data-t="${t}">+ ${t}</button>`).join('')}</div></div></div>
+   ${o.track?`<div class="panel"><div class="hd"><h2>Отгрузка</h2></div><div class="bd"><span class="muted small">Трек-номер</span><br><span class="mono">${esc(o.track)}</span>${o.eta?`<br><span class="muted small">Ожидается ${esc(o.eta)}</span>`:''}</div></div>`:''}
+  </div></div>`)}
+function prodRows(){const q=S.pq.trim().toLowerCase(), rows=CAT.filter(p=>(S.pcat==='all'||p.cat===S.pcat)&&(!q||p.name.toLowerCase().includes(q)||p.sku.toLowerCase().includes(q)));
+  return rows.length?rows.map(p=>`<tr class="${S.dirty.has(p.sku)?'dirty':''}" data-row="${p.sku}"><td><span class="mono small">${p.sku}</span></td><td><b>${esc(p.name)}</b><br><span class="muted small">${CATS[p.cat]} · ${esc(p.pack)}</span></td>
+   <td class="r">${p.mode==='cart'?`<input class="inp" id="p-${p.sku}" data-p="${p.sku}" data-f="price" inputmode="decimal" value="${p.price.toFixed(2)}" aria-label="Базовая цена">`:'<span class="muted small">по запросу</span>'}</td>
+   <td class="r">${p.mode==='cart'?`<input class="inp" id="d-${p.sku}" data-p="${p.sku}" data-f="dealer" inputmode="decimal" value="${p.dealer.toFixed(2)}" aria-label="Цена дилера">`:''}</td>
+   <td><select class="inp" id="s-${p.sku}" data-p="${p.sku}" data-f="stock" aria-label="Наличие">${[['in','в наличии'],['order','под заказ'],['none','нет']].map(([v,t])=>`<option value="${v}" ${p.stock===v?'selected':''}>${t}</option>`).join('')}</select></td>
+   <td class="r num">${p.cq}</td><td><input type="checkbox" id="v-${p.sku}" data-p="${p.sku}" data-f="shown" ${p.shown?'checked':''} aria-label="Показан в каталоге" style="width:20px;height:20px;accent-color:var(--magenta)"></td></tr>`).join(''):`<tr><td colspan="7" class="muted">Ничего не нашлось. Проверьте написание или выберите другой раздел.</td></tr>`}
+const dirtyHTML=()=>S.dirty.size?`<span class="small">Изменено строк: <b>${S.dirty.size}</b></span><button class="btn pri sm" data-a="psave">Сохранить изменения</button>`:`<span class="small muted">Изменений нет</span>`;
+function vProducts(){return shell(head('Товары и цены',`<button class="btn sm" data-a="toast" data-v="Здесь загружается таблица с ценами: артикул и новая цена.">Загрузить цены из таблицы</button>`)+`
+  <p class="muted small">Цены без НДС, в евро. Меняются прямо в ячейке. Цены условные.</p>
+  <input class="inp" id="pq" type="search" placeholder="Название или артикул" value="${esc(S.pq)}" aria-label="Поиск по товарам">
+  <div class="chips">${[['all','Все'],...Object.entries(CATS)].map(([k,t])=>`<button class="chip ${S.pcat===k?'on':''}" data-a="pcat" data-v="${k}">${t}</button>`).join('')}</div>
+  <div class="row" id="dirty" style="justify-content:flex-end;min-height:36px">${dirtyHTML()}</div>
+  <div class="panel tblw"><table class="t"><thead><tr><th>Артикул</th><th>Товар</th><th class="r">Базовая</th><th class="r">Дилер</th><th>Наличие</th><th class="r">В коробке</th><th>Показан</th></tr></thead><tbody id="prows">${prodRows()}</tbody></table></div>`)}
+function vDocs(){return shell(head('Документы на продукцию',`<button class="btn sm" data-a="toast" data-v="Откроется загрузка: файл, тип, товары, язык, срок действия.">Загрузить документ</button>`)+`
+  <p class="muted small">Эти документы видят все клиенты в разделе «Документы». Когда паспорт безопасности обновляется, покупавшие товар клиенты получают уведомление.</p>
+  <div class="panel">${DOCS.map(d=>`<div class="li"><div class="g"><b>${d[0]}</b> · ${d[1]}<br><span class="muted small">${d[2]} · ${d[3]}${d[4]?' · от '+d[4]:''}</span></div>${d[5]?`<span class="pill ${d[5]==='31.12.2026'?'amber':'grey'}">${d[5]==='31.12.2026'?'истекает '+d[5]:'до '+d[5]}</span>`:''}<button class="btn sm" data-a="toast" data-v="Откроется замена файла новой версией.">Обновить</button></div>`).join('')}</div>
+  <p class="small muted">За месяц до конца срока действия администратор получает напоминание.</p>`)}
+
+/* ---------- sheets ---------- */
+function sheetHTML(){const s=S.sheet; if(!s) return ''; let b='',close='Отмена';
+  if(s.t==='mail') b=`<h2>${esc(s.title)}</h2><p class="small muted">Клиент получит это письмо:</p><div class="mail"><b>${esc(s.subj)}</b><br>${esc(s.body)}</div><button class="btn pri block" data-a="mail-yes">${esc(s.btn)}</button>`;
+  if(s.t==='clarify') b=`<h2>Запросить уточнение</h2><div class="stack s8">${['Документ о регистрации компании','Налоговый номер не найден в реестре','Название не совпадает с реестром','Нужен рабочий адрес почты'].map((t,i)=>`<label class="chk"><input type="checkbox" id="cl${i}" value="${t}" ${i===0?'checked':''}><span>${t}</span></label>`).join('')}</div><div class="fld"><label for="cltext">Свой текст <i>необязательно</i></label><textarea class="inp" id="cltext" rows="2"></textarea></div><button class="btn pri block" data-a="clarify-yes">Отправить запрос клиенту</button>`;
+  if(s.t==='reject') b=`<h2>Отклонить заявку</h2><div class="fld"><label for="rjwhy">Причина</label>${sel('rjwhy',['Кабинет открыт только компаниям','Компания не найдена в реестре','Не работаем в этой стране','Другое'],'')}</div><div class="fld"><label for="rjtext">Что написать клиенту <i>необязательно</i></label><textarea class="inp" id="rjtext" rows="2"></textarea></div><button class="btn pri block" data-a="reject-yes">Отклонить и отправить письмо</button>`;
+  if(s.t==='ship') b=`<h2>Отгрузка заказа ${s.no}</h2><div class="fld"><label for="sh-car">Служба доставки</label>${sel('sh-car',['Курьерская служба','Собственная доставка','Самовывоз'],'')}</div><div class="fld ${s.err?'err':''}"><label for="sh-track">Трек-номер</label><input class="inp" id="sh-track" value="${esc(s.track||'')}">${s.err?`<span class="e">Укажите трек-номер: клиент увидит его в кабинете. Для самовывоза напишите «самовывоз».</span>`:''}</div><div class="fld"><label for="sh-eta">Ожидаемая дата доставки <i>необязательно</i></label><input class="inp" id="sh-eta" type="date"></div><p class="small muted">Клиент получит письмо «Заказ отгружен» с трек-номером и накладной.</p><button class="btn pri block" data-a="ship-yes">Отметить отгрузку</button>`;
+  if(s.t==='block') b=`<h2>Заблокировать доступ</h2><p>Сотрудники компании не смогут войти и оформить заказ. Заказы и документы сохранятся.</p><div class="fld ${s.err?'err':''}"><label for="blwhy">Причина</label><input class="inp" id="blwhy">${s.err?`<span class="e">Укажите причину: она останется в карточке клиента.</span>`:''}</div><button class="btn pri block" data-a="block-yes">Заблокировать</button>`;
+  if(s.t==='ocancel') b=`<h2>Отменить заказ ${s.no}?</h2><div class="fld ${s.err?'err':''}"><label for="ocwhy">Причина</label><input class="inp" id="ocwhy">${s.err?`<span class="e">Укажите причину: клиент увидит её в письме.</span>`:''}</div><button class="btn pri block" data-a="ocancel-yes">Отменить заказ и уведомить клиента</button>`,close='Не отменять';
+  if(s.t==='mkorder') b=`<h2>Заказ за клиента</h2><p class="small muted">Для заказов, принятых по телефону или в WhatsApp. Клиент увидит заказ в своей истории.</p><div class="fld"><label for="mk-c">Клиент</label><select class="inp" id="mk-c">${CUST.filter(c=>c.status==='active').map(c=>`<option value="${c.id}" ${c.id===s.c?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+    <div class="fld ${s.bad?'err':''}"><label for="mk-lines">Позиции: артикул и количество, по одной в строке</label><textarea class="inp mono" id="mk-lines" rows="5">${esc(s.text===undefined?'CP-9H-50 6\nCP-TOP-50 6\nCP-CARE-300 12':s.text)}</textarea>${s.bad?`<span class="e">${esc(s.bad)}</span>`:`<span class="h">Можно вставить строки из таблицы или письма.</span>`}</div><button class="btn pri block" data-a="mk-yes">Создать заказ</button>`;
+  return `<div class="scrim" data-a="scrim"><div class="sheet" role="dialog" aria-modal="true">${b}<button class="btn block" data-a="close">${close}</button></div></div>`}
+
+/* ---------- engine ---------- */
+const VIEWS={dash:vDash,apps:vApps,app1:vApp1,custs:vCusts,cust1:vCust1,orders:vOrders,order1:vOrder1,products:vProducts,docs:vDocs};
+function render(keep){const y=window.scrollY;document.getElementById('app').innerHTML=VIEWS[S.view]()+sheetHTML()+(S.toast?`<div class="toast" role="status">${esc(S.toast)}</div>`:'');window.scrollTo(0,keep?y:0)}
+function go(v,arg){S.view=v;S.arg=arg||null;S.sheet=null;render()}
+function toast(m){S.toast=m;render(true);clearTimeout(toastT);toastT=setTimeout(()=>{S.toast=null;const t=document.querySelector('.toast');if(t)t.remove()},2800)}
+const val=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+const O=no=>ORD.find(o=>o.no===no), A=id=>APPS.find(a=>a.id===id);
+function advance(o,to,logText,doc){o.status=to;o.overdue=false;if(doc&&!o.docs.some(d=>d[0]===doc))o.docs.push([doc,o.no.slice(-4)]);if(to==='awaiting'&&!o.due)o.due='25 ноября';o.log.unshift([NOW,logText])}
+
+document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]'); if(!el) return; const a=el.dataset.a,v=el.dataset.v;
+  if(a==='scrim'){if(ev.target===el){S.sheet=null;render(true)}return}
+  switch(a){
+   case 'go': go(v,el.dataset.arg);break;
+   case 'stat': if(v==='apps')S.appTab=el.dataset.tab; else S.ordTab=el.dataset.tab; go(v);break;
+   case 'toast': toast(v);break;
+   case 'close': S.sheet=null;render(true);break;
+   case 'copy': (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Скопировано')).catch(()=>toast('Не удалось скопировать. Выделите текст вручную.'));break;
+   case 'atab': S.appTab=v;render(true);break;
+   case 'otab': S.ordTab=v;render(true);break;
+   case 'pcat': S.pcat=v;render(true);break;
+   case 'approve': {const ap=A(v),g=val('ap-group'),p=val('ap-pay'),l=parseInt(val('ap-limit'),10)||0,m=val('ap-mgr');
+     pending=()=>{const id='c'+(CUST.length+1);CUST.push({id,name:ap.company,country:ap.country,city:ap.addr.split(',').pop().trim(),tax:ap.taxL+' '+ap.tax,addr:ap.addr,group:g,pay:p,limit:l,status:'active',mgr:m,last:'ещё не заказывал',staff:[[ap.name,ap.email,'Владелец']],notes:[]});ap.status='approved';ap.cust=id;S.sheet=null;render(true);toast('Заявка одобрена. Клиент создан, письмо ушло бы на почту.')};
+     S.sheet={t:'mail',title:'Одобрить заявку',subj:'Доступ в кабинет Ceramic Pro Balkans открыт',body:`Здравствуйте, ${ap.name}! Мы проверили данные компании ${ap.company}. Цены и заказы уже доступны. Условия оплаты: ${p.toLowerCase()}.`,btn:'Одобрить и отправить письмо'};render(true);break}
+   case 'clarify': S.sheet={t:'clarify',id:v};render(true);break;
+   case 'clarify-yes': {const ap=A(S.sheet.id),items=[...document.querySelectorAll('.sheet input[type=checkbox]:checked')].map(i=>i.value),t=val('cltext');
+     if(!items.length&&!t){toast('Отметьте, чего не хватает, или напишите свой текст.');break}
+     ap.status='clarify';ap.asked=[...items,t].filter(Boolean).join('; ');S.sheet=null;render(true);toast('Запрос отправлен. Заявка перешла в «Ждут уточнения».');break}
+   case 'reject': S.sheet={t:'reject',id:v};render(true);break;
+   case 'reject-yes': {const ap=A(S.sheet.id);ap.status='rejected';ap.reason=val('rjwhy');S.sheet=null;render(true);toast('Заявка отклонена. Клиент получил бы письмо с причиной.');break}
+   case 'csave': {const c=C(v);c.group=val('c-group');c.pay=val('c-pay');c.limit=parseInt(val('c-limit'),10)||0;c.mgr=val('c-mgr');render(true);toast('Условия сохранены. Изменение записано в журнал.');break}
+   case 'cnote': {const t=val('cnote');if(!t){toast('Напишите текст заметки.');break}C(v).notes.unshift(['11 ноября',t]);render(true);break}
+   case 'block': S.sheet={t:'block',id:v};render(true);break;
+   case 'block-yes': {const w=val('blwhy');if(!w){S.sheet.err=true;render(true);break}const c=C(S.sheet.id);c.status='blocked';c.why=w;S.sheet=null;render(true);toast('Доступ заблокирован.');break}
+   case 'unblock': {const c=C(v);c.status='active';c.why='';render(true);toast('Доступ возвращён.');break}
+   case 'oq': {const o=O(S.arg),orig=o.items.find(i=>i[0]===v)[1];o.edit=o.edit||{};o.edit[v]=Math.max(0,qty(o,v,orig)+parseInt(el.dataset.d,10));o.why=val('why')||o.why;render(true);break}
+   case 'undo': {const o=O(v);delete o.edit;delete o.why;render(true);break}
+   case 'sendchg': {const o=O(v),w=val('why');if(!w){toast('Укажите причину: клиент увидит её рядом с изменённой строкой.');break}
+     const ch=o.items.filter(([k,q])=>o.edit[k]!==undefined&&o.edit[k]!==q).map(([k,q])=>`${P[k].name} ${P[k].pack}: ${q} → ${o.edit[k]}`).join('; ');
+     pending=()=>{o.items=o.items.map(([k,q])=>[k,qty(o,k,q)]).filter(i=>i[1]>0);delete o.edit;delete o.why;advance(o,'changed',`Состав изменён: ${ch}. Причина: ${w}`);S.sheet=null;render(true);toast('Изменения отправлены. Ждём ответа клиента.')};
+     S.sheet={t:'mail',title:'Отправить изменения клиенту',subj:`Заказ ${o.no}: изменён состав`,body:`${ch}. Причина: ${w}. Подтвердите изменения в кабинете одним нажатием.`,btn:'Отправить'};render(true);break}
+   case 'next': {const o=O(v),nx=NEXT[o.status];
+     if(nx[1]==='ship'){S.sheet={t:'ship',no:v};render(true);break}
+     const run=()=>{advance(o,nx[1],nx[1]==='awaiting'?'Подтверждён, выставлена проформа':nx[1]==='paid'?'Оплата получена':nx[1]==='packed'?'Собран':'Доставлен',nx[4]);S.sheet=null;render(true);toast('Статус изменён: '+STAT[nx[1]][0].toLowerCase()+'.')};
+     if(nx[2]){pending=run;S.sheet={t:'mail',title:nx[0],subj:nx[2].replace('{no}',o.no),body:nx[3],btn:nx[0]+' и отправить письмо'};render(true)} else run();break}
+   case 'mail-yes': if(pending){const f=pending;pending=null;f()}break;
+   case 'ship-yes': {const tr=val('sh-track');if(!tr){S.sheet.err=true;render(true);break}const o=O(S.sheet.no);o.track=tr;o.eta=val('sh-eta');advance(o,'shipped',`Отгружен · ${val('sh-car')} · ${tr}`,'Накладная');S.sheet=null;render(true);toast('Отгрузка отмечена. Клиент получил бы письмо с трек-номером.');break}
+   case 'ocancel': S.sheet={t:'ocancel',no:v};render(true);break;
+   case 'ocancel-yes': {const w=val('ocwhy');if(!w){S.sheet.err=true;render(true);break}const o=O(S.sheet.no);delete o.edit;delete o.req;advance(o,'cancelled','Отменён менеджером. Причина: '+w);S.sheet=null;render(true);toast('Заказ отменён.');break}
+   case 'reqdone': {const o=O(v),t=val('msg');if(!t){toast('Напишите ответ клиенту в поле «Переписка и заметки» ниже.');const m=document.getElementById('msg');if(m)m.focus();break}o.log.unshift([NOW,t,'msg']);delete o.req;render(true);toast('Ответ отправлен, запрос закрыт.');break}
+   case 'msg': case 'note': {const t=val('msg');if(!t){toast('Напишите текст.');break}O(v).log.unshift([NOW,t,a==='note'?'int':'msg']);render(true);toast(a==='note'?'Заметка сохранена. Клиент её не видит.':'Сообщение появится у клиента в истории заказа.');break}
+   case 'adddoc': {const o=O(v),t=el.dataset.t;if(o.docs.some(d=>d[0]===t)){toast('Такой документ уже есть в заказе.');break}o.docs.push([t,o.no.slice(-4)]);o.log.unshift([NOW,'Загружен документ: '+t]);render(true);toast('Строка добавлена для примера. В прототипе файл не загружается.');break}
+   case 'mkorder': S.sheet={t:'mkorder',c:v||'c1'};render(true);break;
+   case 'mk-yes': {const text=document.getElementById('mk-lines').value,c=val('mk-c'),items=[],bad=[];
+     text.split('\n').map(l=>l.trim()).filter(Boolean).forEach(l=>{const m=l.split(/[\s;,]+/),k=(m[0]||'').toUpperCase(),q=parseInt(m[1],10);if(P[k]&&P[k].mode==='cart'&&q>0)items.push([k,q]);else bad.push(l)});
+     if(bad.length||!items.length){S.sheet={t:'mkorder',c,text,bad:bad.length?'Не распознаны строки: '+bad.join(' · ')+'. Проверьте артикул и количество.':'Добавьте хотя бы одну позицию.'};render(true);break}
+     const no='CPB-2026-0'+(S.seq++);ORD.unshift({no,c,date:'сегодня',status:'sent',by:'принят по телефону',items,docs:[],log:[[NOW,'Заказ внесён менеджером']]});go('order1',no);toast('Заказ создан. Клиент увидит его в своей истории.');break}
+   case 'psave': {const n=S.dirty.size;S.dirty.clear();render(true);toast(`Сохранено строк: ${n}. Изменения цен записаны в журнал.`);break}
+  }});
+document.addEventListener('input',ev=>{const t=ev.target; if(t.id==='pq'){S.pq=t.value;document.getElementById('prows').innerHTML=prodRows()}
+  if(t.id==='why'&&S.view==='order1'){const o=O(S.arg);if(o)o.why=t.value}});
+document.addEventListener('change',ev=>{const t=ev.target, k=t.dataset.p; if(!k) return; const p=P[k], f=t.dataset.f;
+  if(f==='shown') p.shown=t.checked; else if(f==='stock') p.stock=t.value;
+  else {const n=parseFloat(t.value.replace(',','.')); if(!(n>=0)){t.value=p[f].toFixed(2);toast('Цена должна быть числом, например 60,00.');return} p[f]=Math.round(n*100)/100;t.value=p[f].toFixed(2)}
+  S.dirty.add(k);const r=document.querySelector('[data-row="'+k+'"]');if(r)r.classList.add('dirty');document.getElementById('dirty').innerHTML=dirtyHTML()});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&S.sheet){S.sheet=null;render(true)}});
+render();
+</script>

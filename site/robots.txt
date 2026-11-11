@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /b2b-prototype/
 
 Sitemap: https://ceramicprobalkans.com/sitemap.xml

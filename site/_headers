@@ -10,3 +10,6 @@
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/b2b-prototype/*
+  X-Robots-Tag: noindex, nofollow
